@@ -42,9 +42,9 @@ const LocationSection = () => {
       <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         {/* Map placeholder */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.7, ease }}
+          initial={{ opacity: 0, x: -80, scale: 0.95 }}
+          animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+          transition={{ duration: 0.8, ease }}
           className="glass-light p-1 overflow-hidden"
           style={{ borderRadius: "24px" }}
         >
@@ -59,9 +59,9 @@ const LocationSection = () => {
 
         {/* Info card */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.2, ease }}
+          initial={{ opacity: 0, x: 80, scale: 0.95 }}
+          animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.2, ease }}
           className="glass-light p-8 space-y-1"
         >
           {infoItems.map((item, i) => (

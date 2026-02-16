@@ -81,10 +81,10 @@ const TestimonialsSection = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
-            initial={{ opacity: 0, y: 20, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.97 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, x: 80, rotateY: 15 }}
+            animate={{ opacity: 1, x: 0, rotateY: 0 }}
+            exit={{ opacity: 0, x: -80, rotateY: -15 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
             className="glass-light p-8 md:p-12 text-center group hover:border-primary/20 transition-colors duration-300"
           >
             {/* Big quotation mark */}
