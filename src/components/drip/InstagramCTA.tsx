@@ -1,14 +1,16 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
+const ease = [0.25, 0.1, 0.25, 1] as const;
+
 const InstagramCTA = () => {
   const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const inView = useInView(ref, { once: true, margin: "-100px" as any });
 
   const placeholders = Array.from({ length: 6 }, (_, i) => i);
 
   return (
-    <section ref={ref} className="relative z-10 py-24 md:py-32 overflow-hidden">
+    <section ref={ref} className="relative z-10 py-24 md:py-32 overflow-hidden" style={{ perspective: "800px" }}>
       {/* Image grid */}
       <div className="relative">
         <div className="flex overflow-hidden">
@@ -18,9 +20,13 @@ const InstagramCTA = () => {
             className="flex shrink-0"
           >
             {[...placeholders, ...placeholders].map((_, i) => (
-              <div
+              <motion.div
                 key={i}
+                initial={{ opacity: 0, rotateY: 90 }}
+                animate={inView ? { opacity: 1, rotateY: 0 } : {}}
+                transition={{ delay: 0.1 + (i % 6) * 0.1, duration: 0.7, ease }}
                 className="w-[200px] md:w-[280px] aspect-square shrink-0 bg-muted relative group cursor-pointer overflow-hidden"
+                data-cursor="image"
               >
                 <div className="w-full h-full bg-gradient-to-br from-primary/5 via-muted to-accent/5 flex items-center justify-center">
                   <span className="text-3xl opacity-15">📸</span>
@@ -34,7 +40,7 @@ const InstagramCTA = () => {
                     ❤️
                   </motion.span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </div>
@@ -42,9 +48,9 @@ const InstagramCTA = () => {
         {/* Centered overlay CTA */}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, delay: 0.4, ease }}
             className="glass-heavy p-8 md:p-12 text-center max-w-md mx-6"
           >
             <h2 className="font-heading font-bold text-2xl md:text-3xl lowercase mb-4">

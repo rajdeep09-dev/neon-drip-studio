@@ -27,9 +27,9 @@ const NewsletterSection = () => {
     <section ref={ref} className="relative z-10 py-24 md:py-32 px-6">
       <div className="max-w-2xl mx-auto text-center space-y-6">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.7, ease }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={inView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
           className="font-heading font-bold text-3xl md:text-5xl lowercase"
         >
           join the <span className="text-neon-orange">drip</span> list

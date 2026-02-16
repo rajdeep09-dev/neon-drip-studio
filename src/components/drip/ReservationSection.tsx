@@ -60,9 +60,9 @@ const ReservationSection = () => {
       </div>
 
       <motion.form
-        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        initial={{ opacity: 0, y: 60, scale: 0.9 }}
         animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-        transition={{ delay: 0.3, duration: 0.7, ease }}
+        transition={{ delay: 0.3, duration: 0.8, ease, type: "spring", stiffness: 80, damping: 20 }}
         onSubmit={handleSubmit}
         className="glass-heavy max-w-[700px] mx-auto p-8 md:p-12 space-y-6"
       >

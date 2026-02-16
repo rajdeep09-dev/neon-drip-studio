@@ -41,6 +41,7 @@ const VibesGallery = () => {
             <div
               key={i}
               className="relative shrink-0 group cursor-pointer"
+              data-cursor="gallery"
               style={{
                 width: `${280 + (i % 3) * 80}px`,
                 height: "70vh",

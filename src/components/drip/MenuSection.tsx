@@ -126,9 +126,9 @@ const MenuSection = () => {
 
       {/* Category tabs */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        initial={{ opacity: 0, y: -30, scale: 0.95 }}
+        animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+        transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         className="flex gap-2 overflow-x-auto pb-4 mb-10 scrollbar-hide justify-start md:justify-center"
       >
         {categories.map((cat) => (
