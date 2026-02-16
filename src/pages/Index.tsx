@@ -11,10 +11,15 @@ import InstagramCTA from "@/components/drip/InstagramCTA";
 import LocationSection from "@/components/drip/LocationSection";
 import NewsletterSection from "@/components/drip/NewsletterSection";
 import FooterSection from "@/components/drip/FooterSection";
+import SEOHead from "@/components/drip/SEOHead";
 
 const Index = () => {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-background">
+    <main id="main-content" className="relative min-h-screen overflow-x-hidden bg-background">
+      <SEOHead
+        path="/"
+        description="specialty coffee for people who'd rather be anywhere but a starbucks. single origin beans, small batch roasted, in the arts district."
+      />
       <LivingBackground />
       <Navbar />
       <HeroSection />
@@ -23,7 +28,9 @@ const Index = () => {
       <MenuSection />
       <VibesGallery />
       <TestimonialsSection />
-      <ReservationSection />
+      <section id="reservation">
+        <ReservationSection />
+      </section>
       <InstagramCTA />
       <LocationSection />
       <NewsletterSection />

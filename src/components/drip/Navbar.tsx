@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
+import { useLogoClickEasterEgg } from "@/hooks/useEasterEggs";
 
 const NAV_ITEMS = [
   { label: "menu", href: "/menu" },
@@ -10,19 +11,51 @@ const NAV_ITEMS = [
   { label: "journal", href: "/journal" },
 ];
 
-/* Bouncy letter logo */
+/* Bouncy letter logo with scatter easter egg */
 const BouncyLogo = () => {
   const [hovered, setHovered] = useState(false);
+  const { handleClick, scattering } = useLogoClickEasterEgg();
   const letters = "DRIP".split("");
 
+  const scatterAngles = [
+    { x: -40, y: -60, r: -45 },
+    { x: -20, y: -80, r: 30 },
+    { x: 30, y: -70, r: -20 },
+    { x: 50, y: -50, r: 40 },
+  ];
+
   return (
-    <Link to="/" className="flex flex-col leading-none" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+    <Link
+      to="/"
+      className="flex flex-col leading-none"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={(e) => { e.preventDefault(); handleClick(); }}
+      aria-label="DRIP Coffee Studio - Home"
+    >
       <span className="flex font-heading font-black text-xl tracking-[0.05em]">
         {letters.map((l, i) => (
           <motion.span
             key={i}
-            animate={hovered ? { y: [0, -6, 0], color: ["#FF6B35", "#4ECDC4", "#FF6B35"] } : { y: 0, color: "#FF6B35" }}
-            transition={hovered ? { delay: i * 0.05, duration: 0.4, ease: "easeOut" } : { duration: 0.2 }}
+            animate={
+              scattering
+                ? {
+                    x: [0, scatterAngles[i].x, 0],
+                    y: [0, scatterAngles[i].y, 0],
+                    rotate: [0, scatterAngles[i].r, 0],
+                    scale: [1, 0.8, 1],
+                  }
+                : hovered
+                ? { y: [0, -6, 0], color: ["#FF6B35", "#4ECDC4", "#FF6B35"] }
+                : { y: 0, color: "#FF6B35", x: 0, rotate: 0, scale: 1 }
+            }
+            transition={
+              scattering
+                ? { duration: 1, ease: [0.68, -0.55, 0.27, 1.55] }
+                : hovered
+                ? { delay: i * 0.05, duration: 0.4, ease: "easeOut" }
+                : { duration: 0.2 }
+            }
             className="inline-block"
           >
             {l}
@@ -106,7 +139,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Lock body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -121,12 +153,14 @@ const Navbar = () => {
           scrolled ? "glass-dark !border-x-0 !border-t-0 !rounded-none" : "bg-transparent border-transparent"
         }`}
         style={{ height: scrolled ? 60 : 72 }}
+        role="navigation"
+        aria-label="Main navigation"
       >
         <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
           <BouncyLogo />
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-8" role="menubar">
             {NAV_ITEMS.map((item) => (
               <NavLink key={item.label} item={item} />
             ))}
@@ -146,7 +180,8 @@ const Navbar = () => {
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5 z-50"
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
           >
             <motion.span
               animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
@@ -173,6 +208,8 @@ const Navbar = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-40 glass-heavy !rounded-none flex flex-col items-center justify-center gap-8"
+            role="dialog"
+            aria-label="Mobile navigation menu"
           >
             {NAV_ITEMS.map((item, i) => (
               <motion.div
@@ -208,7 +245,6 @@ const Navbar = () => {
               </Link>
             </motion.div>
 
-            {/* Bottom info */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import InnerPageLayout from "@/components/drip/InnerPageLayout";
+import SEOHead from "@/components/drip/SEOHead";
 import type { Easing } from "framer-motion";
 
 const ease: Easing = [0.25, 0.1, 0.25, 1];
@@ -36,6 +37,7 @@ const EventsPage = () => {
       heading={<>stuff happening at <span className="text-primary">drip</span></>}
       sub="workshops, tastings, live music, and general good times."
     >
+      <SEOHead title="Events" description="upcoming events at drip coffee studio — latte art throwdowns, vinyl nights, workshops, and more." path="/events" />
       <section ref={listRef} className="max-w-4xl mx-auto px-6 py-12 space-y-6">
         {events.map((evt, i) => (
           <motion.div

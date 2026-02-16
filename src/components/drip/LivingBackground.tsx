@@ -145,10 +145,10 @@ const LivingBackground = () => {
   return (
     <>
       {/* Layer 0: Dot grid */}
-      <div className="fixed inset-0 dot-grid z-0 pointer-events-none" />
+      <div className="fixed inset-0 dot-grid z-0 pointer-events-none" aria-hidden="true" />
 
       {/* Layer 1: Animated mesh gradient blobs */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
           className="absolute w-[600px] h-[600px] rounded-full opacity-100"
           style={{
@@ -182,10 +182,10 @@ const LivingBackground = () => {
       </div>
 
       {/* Layer 2: Film grain */}
-      <div className="film-grain" />
+      <div className="film-grain" aria-hidden="true" />
 
       {/* Layer 3: Falling leaves container */}
-      <div ref={containerRef} className="fixed inset-0 z-[2] pointer-events-none overflow-hidden" />
+      <div ref={containerRef} className="fixed inset-0 z-[2] pointer-events-none overflow-hidden" aria-hidden="true" />
     </>
   );
 };

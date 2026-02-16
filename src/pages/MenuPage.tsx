@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import InnerPageLayout from "@/components/drip/InnerPageLayout";
+import SEOHead from "@/components/drip/SEOHead";
 
 const categories = ["all", "espresso drinks", "pour overs", "matcha + tea", "pastries", "cold stuff", "seasonal"];
 const dietaryFilters = ["vegan", "oat milk", "caffeine-free", "gluten-free"];
@@ -42,6 +43,7 @@ const MenuPage = () => {
       heading={<>everything we make. and yes, it's <span className="text-neon-orange">all good</span>.</>}
       sub="filter by what you're craving. we won't judge."
     >
+      <SEOHead title="Menu" description="browse our full menu — espresso drinks, pour overs, matcha, pastries, and seasonal specials. all actually good." path="/menu" />
       {/* Sticky filter bar */}
       <div className="sticky top-[60px] z-30 py-4 px-6 glass-dark !rounded-none !border-x-0 transition-all">
         <div className="max-w-7xl mx-auto space-y-3">

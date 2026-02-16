@@ -14,7 +14,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-background">
+    <main id="main-content" className="relative min-h-screen overflow-x-hidden bg-background">
       <LivingBackground />
       <Navbar />
       <section className="relative z-10 flex min-h-screen items-center justify-center px-6">

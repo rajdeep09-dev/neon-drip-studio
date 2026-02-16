@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import InnerPageLayout from "@/components/drip/InnerPageLayout";
+import SEOHead from "@/components/drip/SEOHead";
 import type { Easing } from "framer-motion";
 
 const ease: Easing = [0.25, 0.1, 0.25, 1];
@@ -39,6 +40,7 @@ const AboutPage = () => {
       heading={<>we're <span className="line-through decoration-primary decoration-2">not like other</span> <span className="font-handwritten text-primary">different from</span> other coffee shops.</>}
       sub="and we mean that."
     >
+      <SEOHead title="About" description="the story behind drip coffee studio — who we are, what we believe, and why we started this whole thing." path="/about" />
       {/* Story + Timeline */}
       <section ref={storyRef} className="max-w-4xl mx-auto px-6 py-16 space-y-20">
         {/* Story body */}

@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import MenuPage from "./pages/MenuPage";
 import AboutPage from "./pages/AboutPage";
@@ -19,8 +20,16 @@ import ScrollProgressBar from "./components/drip/ScrollProgressBar";
 import SpotlightFollow from "./components/drip/SpotlightFollow";
 import Preloader from "./components/drip/Preloader";
 import PageTransition from "./components/drip/PageTransition";
+import SkipToContent from "./components/drip/SkipToContent";
+import LocalBusinessSchema from "./components/drip/LocalBusinessSchema";
+import { useKonamiCode } from "./hooks/useEasterEggs";
 
 const queryClient = new QueryClient();
+
+const KonamiWrapper = ({ children }: { children: React.ReactNode }) => {
+  useKonamiCode();
+  return <>{children}</>;
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -45,20 +54,26 @@ const App = () => {
   const handleLoaded = useCallback(() => setLoaded(true), []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        {!loaded && <Preloader onComplete={handleLoaded} />}
-        <CustomCursor />
-        <ClickRipple />
-        <ScrollProgressBar />
-        <SpotlightFollow />
-        <BrowserRouter>
-          <AnimatedRoutes />
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <LocalBusinessSchema />
+          <SkipToContent />
+          {!loaded && <Preloader onComplete={handleLoaded} />}
+          <CustomCursor />
+          <ClickRipple />
+          <ScrollProgressBar />
+          <SpotlightFollow />
+          <KonamiWrapper>
+            <BrowserRouter>
+              <AnimatedRoutes />
+            </BrowserRouter>
+          </KonamiWrapper>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 
