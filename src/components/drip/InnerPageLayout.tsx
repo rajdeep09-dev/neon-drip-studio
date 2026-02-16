@@ -19,7 +19,7 @@ const InnerPageLayout = ({ preHeading, heading, sub, children }: Props) => {
   const inView = useInView(ref, { once: true });
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-background">
+    <main id="main-content" className="relative min-h-screen overflow-x-hidden bg-background">
       <LivingBackground />
       <Navbar />
 

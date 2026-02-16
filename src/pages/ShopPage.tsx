@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import InnerPageLayout from "@/components/drip/InnerPageLayout";
+import SEOHead from "@/components/drip/SEOHead";
 import type { Easing } from "framer-motion";
 
 const ease: Easing = [0.25, 0.1, 0.25, 1];
@@ -29,6 +30,7 @@ const ShopPage = () => {
       heading={<>bring the <span className="text-gradient-hero">drip</span> home.</>}
       sub="beans, merch, and gifts that don't suck."
     >
+      <SEOHead title="Shop" description="shop drip coffee beans, merch, gear, and cold brew concentrate. bring the drip home." path="/shop" />
       <section ref={gridRef} className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((p, i) => (

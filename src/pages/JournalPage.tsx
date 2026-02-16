@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import InnerPageLayout from "@/components/drip/InnerPageLayout";
+import SEOHead from "@/components/drip/SEOHead";
 import type { Easing } from "framer-motion";
 
 const ease: Easing = [0.25, 0.1, 0.25, 1];
@@ -29,6 +30,7 @@ const JournalPage = () => {
       heading={<>the <span className="text-gradient-hero">drip</span> journal</>}
       sub="coffee thoughts, recipes, and things we think are cool."
     >
+      <SEOHead title="Journal" description="the drip journal — coffee tips, recipes, behind the scenes, and culture pieces from our team." path="/journal" />
       {/* Featured post */}
       {featured && (
         <section className="max-w-5xl mx-auto px-6 pb-12">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import InnerPageLayout from "@/components/drip/InnerPageLayout";
+import SEOHead from "@/components/drip/SEOHead";
 
 const subjects = ["just saying hi", "catering inquiry", "event space", "collab / partnership", "feedback", "other"];
 
@@ -12,6 +13,7 @@ const ContactPage = () => {
       heading={<>say <span className="text-primary">hey</span></>}
       sub="questions, love letters, complaints (jk pls be nice), or just wanna chat."
     >
+      <SEOHead title="Contact" description="get in touch with drip coffee studio — catering, events, collabs, or just say hi." path="/contact" />
       <section className="max-w-xl mx-auto px-6 py-12">
         <AnimatePresence mode="wait">
           {submitted ? (
