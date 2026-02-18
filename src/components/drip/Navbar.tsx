@@ -11,113 +11,109 @@ const NAV_ITEMS = [
   { label: "journal", href: "/journal" },
 ];
 
-/* Bouncy letter logo with scatter easter egg */
+/* Magnetic Hook */
+const useMagnetic = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const x = clientX - (left + width / 2);
+    const y = clientY - (top + height / 2);
+    setPosition({ x: x * 0.3, y: y * 0.3 });
+  };
+
+  const handleMouseLeave = () => setPosition({ x: 0, y: 0 });
+
+  return { ref, position, handleMouseMove, handleMouseLeave };
+};
+
+/* Magnetic Link Component */
+const MagneticLink = ({ children, to, className }: { children: React.ReactNode, to: string, className?: string }) => {
+  const { ref, position, handleMouseMove, handleMouseLeave } = useMagnetic();
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      className="inline-block"
+    >
+      <Link to={to} className={className}>
+        {children}
+      </Link>
+    </motion.div>
+  );
+};
+
+/* Bouncy Logo */
 const BouncyLogo = () => {
   const [hovered, setHovered] = useState(false);
   const { handleClick, scattering } = useLogoClickEasterEgg();
   const letters = "DRIP".split("");
 
-  const scatterAngles = [
-    { x: -40, y: -60, r: -45 },
-    { x: -20, y: -80, r: 30 },
-    { x: 30, y: -70, r: -20 },
-    { x: 50, y: -50, r: 40 },
-  ];
-
   return (
     <Link
       to="/"
-      className="flex flex-col items-center leading-none"
+      className="flex flex-col items-center leading-none group"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={(e) => { e.preventDefault(); handleClick(); }}
-      aria-label="DRIP Coffee Studio - Home"
+      aria-label="Home"
     >
-      <span className="flex font-serif italic font-bold text-2xl tracking-wide text-artemis-orange">
+      <span className="flex font-serif italic font-black text-3xl tracking-tight text-artemis-orange relative z-10">
         {letters.map((l, i) => (
           <motion.span
             key={i}
-            animate={
-              scattering
-                ? {
-                    x: [0, scatterAngles[i].x, 0],
-                    y: [0, scatterAngles[i].y, 0],
-                    rotate: [0, scatterAngles[i].r, 0],
-                    scale: [1, 0.8, 1],
-                  }
-                : hovered
-                ? { y: [0, -4, 0], color: ["#F05A28", "#0A1A44", "#F05A28"] }
-                : { y: 0, color: "#F05A28", x: 0, rotate: 0, scale: 1 }
-            }
-            transition={
-              scattering
-                ? { duration: 1, ease: [0.68, -0.55, 0.27, 1.55] }
-                : hovered
-                ? { delay: i * 0.05, duration: 0.4, ease: "easeOut" }
-                : { duration: 0.2 }
-            }
-            className="inline-block"
+            animate={hovered ? { y: [0, -6, 0], scale: [1, 1.1, 1], rotate: [0, i % 2 === 0 ? -5 : 5, 0] } : {}}
+            transition={{ delay: i * 0.05, duration: 0.4 }}
+            className="inline-block origin-bottom"
           >
             {l}
           </motion.span>
         ))}
       </span>
-      <span className="font-heading text-[10px] text-artemis-blue/60 uppercase tracking-widest mt-1">coffee studio</span>
+      <span className="font-mono-label text-[9px] text-artemis-blue/50 uppercase tracking-[0.2em] mt-1 group-hover:tracking-[0.3em] transition-all duration-300">
+        coffee studio
+      </span>
     </Link>
   );
 };
 
-/* Scramble text hook */
-const useScramble = (text: string, active: boolean) => {
-  const [display, setDisplay] = useState(text);
-  const chars = "abcdefghijklmnopqrstuvwxyz";
-
-  useEffect(() => {
-    if (!active) { setDisplay(text); return; }
-    let frame = 0;
-    const maxFrames = 8;
-    const interval = setInterval(() => {
-      frame++;
-      setDisplay(
-        text.split("").map((c, i) => {
-          if (frame > i * 1.5) return c;
-          return chars[Math.floor(Math.random() * chars.length)];
-        }).join("")
-      );
-      if (frame >= maxFrames) { clearInterval(interval); setDisplay(text); }
-    }, 30);
-    return () => clearInterval(interval);
-  }, [active, text]);
-
-  return display;
-};
-
+/* Nav Link with Scramble & Hover Indicator */
 const NavLink = ({ item }: { item: typeof NAV_ITEMS[0] }) => {
   const [hovered, setHovered] = useState(false);
   const location = useLocation();
   const isActive = location.pathname === item.href;
-  const display = useScramble(item.label, hovered);
 
   return (
-    <Link
-      to={item.href}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className={`relative lowercase text-sm font-medium tracking-wide transition-colors duration-300 font-heading ${
-        isActive ? "text-artemis-orange" : "text-artemis-blue/70 hover:text-artemis-orange"
-      }`}
-    >
-      {display}
+    <MagneticLink to={item.href} className="relative px-2 py-1 group">
+      <span
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={`relative lowercase text-sm font-medium tracking-wide transition-colors duration-300 font-heading z-10 ${
+          isActive ? "text-artemis-orange" : "text-artemis-blue/80 group-hover:text-artemis-orange"
+        }`}
+      >
+        {item.label}
+      </span>
+
+      {/* Animated Underline */}
       <motion.span
-        className="absolute -bottom-1 left-1/2 w-1 h-1 rounded-full bg-artemis-orange"
-        initial={false}
-        animate={{
-          scale: isActive || hovered ? 1 : 0,
-          x: "-50%",
-        }}
-        transition={{ type: "spring", stiffness: 400, damping: 20 }}
+        className="absolute bottom-0 left-0 w-full h-[1.5px] bg-artemis-orange/30 rounded-full origin-left"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: isActive || hovered ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "circOut" }}
       />
-    </Link>
+
+      {/* Glow Effect */}
+      {isActive && (
+         <motion.div layoutId="nav-glow" className="absolute inset-0 bg-artemis-orange/5 blur-md rounded-lg -z-10" />
+      )}
+    </MagneticLink>
   );
 };
 
@@ -129,7 +125,7 @@ const Navbar = () => {
 
   const handleScroll = useCallback(() => {
     const y = window.scrollY;
-    setScrolled(y > 50);
+    setScrolled(y > 20);
     setHidden(y > 100 && y > lastScroll.current);
     lastScroll.current = y;
   }, []);
@@ -139,131 +135,82 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
-  }, [mobileOpen]);
-
   return (
     <>
       <motion.nav
+        initial={{ y: -100 }}
         animate={{ y: hidden && !mobileOpen ? "-100%" : "0%" }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-artemis-border/20" : "bg-transparent border-transparent"
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 border-b ${
+          scrolled
+            ? "bg-white/70 backdrop-blur-xl border-white/20 shadow-sm h-16"
+            : "bg-transparent border-transparent h-24"
         }`}
-        style={{ height: scrolled ? 60 : 100 }}
-        role="navigation"
-        aria-label="Main navigation"
       >
-        <div className="max-w-[1400px] mx-auto h-full px-8 md:px-12 flex items-start pt-6 md:pt-8 justify-between">
+        <div className="max-w-[1400px] mx-auto h-full px-6 md:px-12 flex items-center justify-between">
 
-          {/* Left Navigation Group */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Left Nav */}
+          <div className="hidden md:flex items-center gap-10">
              {NAV_ITEMS.slice(0, 2).map((item) => (
                 <NavLink key={item.label} item={item} />
              ))}
           </div>
 
-          {/* Center Logo - Only visible on scroll or mobile, otherwise hidden to avoid duplication with Hero */}
-          <div className={`${scrolled ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+          {/* Center Logo */}
+          <div className="absolute left-1/2 -translate-x-1/2">
              <BouncyLogo />
           </div>
 
-          {/* Right Navigation Group */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Right Nav */}
+          <div className="hidden md:flex items-center gap-10">
              {NAV_ITEMS.slice(2).map((item) => (
                 <NavLink key={item.label} item={item} />
              ))}
-             <Link
-              to="/#reservation"
-              className="px-6 py-2 rounded-full bg-artemis-orange text-white text-sm font-heading font-medium lowercase hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg ml-4"
-            >
-              reserve
-            </Link>
+             <MagneticLink to="/#reservation" className="">
+                <button className="px-6 py-2.5 rounded-full bg-artemis-orange text-white text-xs font-heading font-bold uppercase tracking-widest hover:bg-orange-600 transition-all duration-300 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5">
+                  Reserve
+                </button>
+             </MagneticLink>
           </div>
 
-          {/* Mobile hamburger - Absolute positioned on mobile */}
+          {/* Mobile Toggle */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden absolute top-6 right-6 w-8 h-8 flex flex-col items-center justify-center gap-1.5 z-50"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
+            className="md:hidden relative z-[110] w-10 h-10 flex flex-col items-center justify-center gap-1.5 group"
           >
-            <motion.span
-              animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-artemis-blue rounded-full origin-center"
-            />
-            <motion.span
-              animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-              className="block w-6 h-0.5 bg-artemis-blue rounded-full"
-            />
-            <motion.span
-              animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-artemis-blue rounded-full origin-center"
-            />
+            <span className={`w-6 h-0.5 bg-current transition-transform duration-300 ${mobileOpen ? "rotate-45 translate-y-2" : ""}`} />
+            <span className={`w-6 h-0.5 bg-current transition-opacity duration-300 ${mobileOpen ? "opacity-0" : ""}`} />
+            <span className={`w-6 h-0.5 bg-current transition-transform duration-300 ${mobileOpen ? "-rotate-45 -translate-y-2" : ""}`} />
           </button>
         </div>
       </motion.nav>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-artemis-bg flex flex-col items-center justify-center gap-8"
-            role="dialog"
-            aria-label="Mobile navigation menu"
+            initial={{ clipPath: "circle(0% at 100% 0%)" }}
+            animate={{ clipPath: "circle(150% at 100% 0%)" }}
+            exit={{ clipPath: "circle(0% at 100% 0%)" }}
+            transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 z-[90] bg-[#F8F5F2] flex flex-col items-center justify-center gap-8"
           >
             {NAV_ITEMS.map((item, i) => (
               <motion.div
                 key={item.label}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 40 }}
-                transition={{ delay: i * 0.08, duration: 0.4 }}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.1, duration: 0.5 }}
               >
                 <Link
                   to={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className="font-serif italic font-bold text-4xl lowercase text-artemis-blue hover:text-artemis-orange transition-colors"
+                  className="font-serif italic font-bold text-5xl lowercase text-artemis-blue hover:text-artemis-orange transition-colors"
                 >
                   {item.label}
                 </Link>
               </motion.div>
             ))}
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              transition={{ delay: 0.5 }}
-              className="mt-8"
-            >
-              <Link
-                to="/#reservation"
-                onClick={() => setMobileOpen(false)}
-                className="bg-artemis-orange text-white rounded-full px-8 py-3 font-heading font-semibold lowercase hover:bg-orange-600 transition-colors"
-              >
-                reserve a table
-              </Link>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="absolute bottom-8 text-center space-y-2"
-            >
-              <p className="font-heading text-artemis-blue/50 text-sm">420 Brew Street, Arts District</p>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-gray-200 text-[10px] font-mono uppercase tracking-wider text-artemis-orange">
-                <span className="w-1.5 h-1.5 rounded-full bg-artemis-orange animate-pulse" />
-                open now
-              </div>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

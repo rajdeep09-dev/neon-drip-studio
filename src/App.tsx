@@ -22,6 +22,7 @@ import Preloader from "./components/drip/Preloader";
 import PageTransition from "./components/drip/PageTransition";
 import SkipToContent from "./components/drip/SkipToContent";
 import LocalBusinessSchema from "./components/drip/LocalBusinessSchema";
+import NoiseOverlay from "./components/drip/NoiseOverlay";
 import { useKonamiCode } from "./hooks/useEasterEggs";
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => {
           <Sonner />
           <LocalBusinessSchema />
           <SkipToContent />
+          <NoiseOverlay />
           {!loaded && <Preloader onComplete={handleLoaded} />}
           <CustomCursor />
           <ClickRipple />

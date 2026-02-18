@@ -3,120 +3,96 @@
 @tailwind utilities;
 
 :root {
-  /* Artemis Theme Colors */
-  --background: 33 26% 96%; /* #F8F5F2 */
-  --foreground: 223 74% 15%; /* #0A1A44 */
+  /* Enhanced Artemis Theme Colors */
+  --background: 35 25% 97%; /* #F9F6F4 - Slightly warmer */
+  --foreground: 223 74% 12%; /* #07122E - Deeper blue */
 
-  --card: 0 0% 100%; /* White cards */
+  --card: 0 0% 100%;
   --card-foreground: 223 74% 15%;
 
   --popover: 0 0% 100%;
   --popover-foreground: 223 74% 15%;
 
-  --primary: 15 88% 55%; /* #F05A28 */
+  --primary: 15 90% 58%; /* #F26231 - More vibrant orange */
   --primary-foreground: 33 26% 96%;
 
-  --secondary: 199 28% 60%; /* #7CA5B8 (Muted Blue) */
+  --secondary: 200 30% 65%; /* #8BB5C7 - Brighter teal */
   --secondary-foreground: 223 74% 15%;
 
-  --muted: 33 10% 90%;
-  --muted-foreground: 223 40% 40%;
+  --muted: 33 15% 92%;
+  --muted-foreground: 223 30% 45%;
 
-  --accent: 15 88% 55%;
+  --accent: 15 90% 58%;
   --accent-foreground: 33 26% 96%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 33 26% 96%;
 
-  --border: 199 28% 80%;
-  --input: 199 28% 80%;
-  --ring: 15 88% 55%;
+  --border: 200 20% 85%;
+  --input: 200 20% 85%;
+  --ring: 15 90% 58%;
 
-  --radius: 1.5rem; /* Rounded corners */
-
-  --sidebar-background: 33 26% 94%;
-  --sidebar-foreground: 223 74% 15%;
-  --sidebar-primary: 15 88% 55%;
-  --sidebar-primary-foreground: 33 26% 96%;
-  --sidebar-accent: 33 10% 90%;
-  --sidebar-accent-foreground: 223 74% 15%;
-  --sidebar-border: 199 28% 80%;
-  --sidebar-ring: 15 88% 55%;
+  --radius: 1.5rem;
 }
 
 @layer base {
   * { @apply border-border; }
   body {
-    @apply bg-background text-foreground;
-    font-family: 'Space Grotesk', system-ui, sans-serif; /* Body font */
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-serif italic; /* Artemis style headers */
+    @apply font-serif italic tracking-tight;
   }
   html { scroll-behavior: smooth; }
 }
 
-/* ── Font utilities ── */
-.font-heading { font-family: 'Space Grotesk', system-ui, sans-serif; }
+/* ── Typography Enhancements ── */
+.font-heading { font-family: 'Space Grotesk', system-ui, sans-serif; letter-spacing: -0.02em; }
 .font-handwritten { font-family: 'Caveat', cursive; }
-.font-mono-label { font-family: 'JetBrains Mono', monospace; }
-.font-serif { font-family: 'Playfair Display', serif; }
+.font-mono-label { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
+.font-serif { font-family: 'Playfair Display', serif; letter-spacing: -0.01em; }
 
-/* ── Custom Utilities for Artemis Theme ── */
-.card-artemis {
-  @apply bg-white rounded-[40px] shadow-lg border border-[#7CA5B8]/20;
+/* ── Enhanced Utilities ── */
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+
+/* Smooth Reveal Animation */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* ── Legacy Glassmorphism (Updated for Light Theme) ── */
+/* ── Glassmorphism Polish ── */
 .glass {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(124, 165, 184, 0.2);
-}
-.glass-light {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid rgba(124, 165, 184, 0.1);
-  border-radius: 20px;
-}
-.glass-dark {
-  background: rgba(10, 26, 68, 0.8); /* Dark Blue */
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  color: white;
-}
-.glass-orange {
-  background: rgba(240, 90, 40, 0.1);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(240, 90, 40, 0.2);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
 }
 
-/* ── Animations ── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-white/60 shadow-xl rounded-[40px];
 }
-.animate-float { animation: float 4s ease-in-out infinite; }
+
+/* ── Custom Cursor Styles ── */
+body { cursor: none; }
+a, button, [role="button"] { cursor: none; }
 
 /* ── Scrollbar ── */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #F8F5F2; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #7CA5B8;
-  border-radius: 4px;
+  background: rgba(10, 26, 68, 0.2);
+  border-radius: 10px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #F05A28;
-}
+::-webkit-scrollbar-thumb:hover { background: rgba(240, 90, 40, 0.6); }
 
 /* ── Selection ── */
-::selection {
-  background: rgba(240, 90, 40, 0.2);
-  color: #0A1A44;
-}
+::selection { background: rgba(240, 90, 40, 0.15); color: #0A1A44; }

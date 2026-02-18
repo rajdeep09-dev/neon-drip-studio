@@ -1,159 +1,94 @@
-import { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-const categories = [
-  "all",
-  "espresso drinks",
-  "pour overs",
-  "matcha + tea",
-  "pastries",
-  "cold stuff",
-  "seasonal",
+const MENU_ITEMS = [
+  { category: "Espresso", items: [
+    { name: "Double Shot", price: "$4", desc: "Two shots of our signature blend" },
+    { name: "Americano", price: "$4.5", desc: "Espresso with hot water" },
+    { name: "Cortado", price: "$5", desc: "Equal parts espresso and steamed milk" },
+  ]},
+  { category: "Pour Over", items: [
+    { name: "Ethiopia Yirgacheffe", price: "$6", desc: "Floral, citrus notes, tea-like body" },
+    { name: "Colombia Huila", price: "$5.5", desc: "Caramel sweetness, medium acidity" },
+    { name: "Kenya AA", price: "$6.5", desc: "Blackcurrant, bright acidity, juicy" },
+  ]},
+  { category: "Signature", items: [
+    { name: "Honey Lavender Latte", price: "$7", desc: "House-made lavender syrup, local honey" },
+    { name: "Spiced Maple Cold Brew", price: "$6.5", desc: "Cold brew infused with cinnamon & maple" },
+    { name: "Matcha Tonic", price: "$6", desc: "Ceremonial matcha, tonic water, lime" },
+  ]}
 ];
-
-interface MenuItem {
-  name: string;
-  description: string;
-  price: string;
-  tags: string[];
-  category: string;
-}
-
-const menuItems: MenuItem[] = [
-  { name: "the classic drip", description: "house blend. smooth. chocolatey. no drama.", price: "$4", tags: ["house fav"], category: "pour overs" },
-  { name: "oat milk latte", description: "espresso + oat milk + a little hug in a cup", price: "$6", tags: ["oat milk", "popular"], category: "espresso drinks" },
-  { name: "matcha fog", description: "ceremonial grade matcha. lavender. oat milk. unreal.", price: "$7", tags: ["matcha", "oat milk"], category: "matcha + tea" },
-  { name: "cold brew on tap", description: "steeped 20 hours. served on nitro. dangerously smooth.", price: "$5.50", tags: ["cold", "nitro"], category: "cold stuff" },
-  { name: "dirty chai", description: "masala chai + espresso shot. spicy and strong like your personality.", price: "$6.50", tags: ["spicy", "espresso"], category: "espresso drinks" },
-  { name: "cardamom croissant", description: "butter. layers. cardamom sugar. life-changing.", price: "$5", tags: ["pastry", "fresh daily"], category: "pastries" },
-  { name: "avocado toast (obviously)", description: "sourdough + smashed avo + chili flake + poached egg", price: "$14", tags: ["brunch", "filling"], category: "pastries" },
-  { name: "seasonal mystery drink", description: "we change it every month. trust us. its always fire.", price: "$7", tags: ["seasonal", "limited"], category: "seasonal" },
-];
-
-const MenuCard = ({ item, index }: { item: MenuItem; index: number }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-      className="bg-white rounded-[30px] shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow group h-full flex flex-col"
-    >
-      {/* Image area */}
-      <div className="relative overflow-hidden aspect-square bg-gray-50">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-blue-50/50" />
-        <div className="w-full h-full flex items-center justify-center font-serif italic text-6xl text-artemis-orange/20">
-          {item.name.charAt(0)}
-        </div>
-        {/* Price badge */}
-        <div className="absolute top-4 right-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-sm font-serif italic text-artemis-blue border border-gray-200 shadow-sm">
-          {item.price}
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6 flex-1 flex flex-col justify-between">
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-serif italic font-bold text-xl text-artemis-blue">
-              {item.name}
-            </h3>
-          </div>
-          <p className="text-gray-500 text-sm leading-relaxed font-heading">
-            {item.description}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap gap-2 pt-4 mt-auto">
-          {item.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2 py-1 bg-gray-100 rounded-md text-[10px] uppercase tracking-wider text-gray-500 font-heading border border-gray-200"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
-  );
-};
 
 const MenuSection = () => {
-  const [active, setActive] = useState("all");
-  const ref = useRef<HTMLElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-
-  const filtered =
-    active === "all"
-      ? menuItems
-      : menuItems.filter((i) => i.category === active);
-
   return (
-    <section ref={ref} className="relative z-10 py-24 md:py-32 px-6 max-w-7xl mx-auto bg-artemis-bg">
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7 }}
-        className="text-center mb-16 space-y-4"
-      >
-        <span className="inline-block px-4 py-1 rounded-full border border-artemis-orange/30 text-artemis-orange font-serif italic text-lg bg-orange-50/50">
-          the goods
-        </span>
-        <h2 className="font-serif italic text-artemis-blue text-5xl md:text-7xl leading-tight">
-          stuff you'll <span className="text-artemis-orange underline decoration-wavy decoration-2">actually want</span> to order.
-        </h2>
-      </motion.div>
+    <section className="relative py-32 bg-[#0A1A44] text-[#F8F5F2] overflow-hidden">
+      {/* Decorative Background Elements */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#F05A28]/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#7CA5B8]/10 rounded-full blur-[80px] pointer-events-none" />
 
-      {/* Category tabs */}
-      <motion.div
-        initial={{ opacity: 0, y: -30, scale: 0.95 }}
-        animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-        transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="flex gap-3 overflow-x-auto pb-6 mb-12 scrollbar-hide justify-start md:justify-center"
-      >
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActive(cat)}
-            className={`shrink-0 rounded-full px-6 py-2 text-base font-serif italic transition-all duration-300 ${
-              active === cat
-                ? "bg-artemis-blue text-white shadow-lg"
-                : "bg-white text-gray-500 border border-gray-200 hover:border-artemis-blue/50 hover:text-artemis-blue"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </motion.div>
-
-      {/* Cards grid */}
-      <AnimatePresence mode="wait">
+      <div className="container px-4 md:px-8 mx-auto relative z-10">
         <motion.div
-          key={active}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-24"
         >
-          {filtered.map((item, i) => (
-            <MenuCard key={item.name} item={item} index={i} />
-          ))}
+          <span className="font-heading text-xs uppercase tracking-[0.3em] text-[#F05A28] mb-4 block">Selection</span>
+          <h2 className="font-serif italic text-6xl md:text-8xl text-white mb-6">Curated Menu</h2>
+          <p className="font-heading text-lg text-white/60 max-w-2xl mx-auto">
+            A rotating selection of seasonal coffees and signature beverages designed to highlight unique flavor profiles.
+          </p>
         </motion.div>
-      </AnimatePresence>
 
-      {/* CTA */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.8 }}
-        className="text-center mt-20"
-      >
-        <button className="group inline-flex items-center gap-2 text-artemis-blue hover:text-artemis-orange font-serif italic text-xl transition-colors duration-300 border-b border-transparent hover:border-artemis-orange pb-1">
-          see the full menu
-          <span className="inline-block group-hover:translate-x-1.5 transition-transform duration-300">
-            →
-          </span>
-        </button>
-      </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {MENU_ITEMS.map((section, i) => (
+            <motion.div
+              key={section.category}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15, duration: 0.8 }}
+              className="group"
+            >
+              <h3 className="font-serif italic text-4xl text-[#F05A28] mb-8 border-b border-white/10 pb-4">
+                {section.category}
+              </h3>
+
+              <div className="space-y-8">
+                {section.items.map((item, j) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.3 + j * 0.1 }}
+                    className="relative group/item"
+                  >
+                    <div className="flex justify-between items-baseline mb-2">
+                      <h4 className="font-heading font-medium text-xl text-white group-hover/item:text-[#F05A28] transition-colors duration-300">
+                        {item.name}
+                      </h4>
+                      <span className="font-mono-label text-sm text-white/50">{item.price}</span>
+                    </div>
+                    <p className="font-serif italic text-white/40 text-sm group-hover/item:text-white/70 transition-colors duration-300">
+                      {item.desc}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-24 text-center">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-10 py-4 border border-white/20 rounded-full font-heading uppercase tracking-widest text-sm hover:bg-white hover:text-[#0A1A44] transition-all duration-300"
+          >
+            Download Full Menu
+          </motion.button>
+        </div>
+      </div>
     </section>
   );
 };

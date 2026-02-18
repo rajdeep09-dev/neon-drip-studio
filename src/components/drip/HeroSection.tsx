@@ -1,118 +1,208 @@
-import { motion } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
 import { Link } from "react-router-dom";
 
+/* Text Reveal Component */
+const RevealText = ({ text, delay = 0, className = "" }: { text: string; delay?: number; className?: string }) => (
+  <span className={`inline-block overflow-hidden align-bottom ${className}`}>
+    <motion.span
+      initial={{ y: "110%" }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay }}
+      className="inline-block"
+    >
+      {text}
+    </motion.span>
+  </span>
+);
+
 const HeroSection = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+
+  // Parallax Mouse Effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set(clientX / innerWidth - 0.5);
+    mouseY.set(clientY / innerHeight - 0.5);
+  };
+
+  const springConfig = { damping: 25, stiffness: 150 };
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), springConfig);
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), springConfig);
+
   return (
-    <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#e0e0e0]">
-      {/* Background Image Layer - Vintage Landscape Painting Style */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1685648043756-124a4adad0ec?q=80&w=2835&auto=format&fit=crop')", // Lighter, painting style
-          filter: "brightness(0.9) contrast(1.1) saturate(0.8) blur(2px)"
-        }}
-      />
+    <section
+      ref={containerRef}
+      className="relative min-h-[110vh] w-full flex items-center justify-center overflow-hidden bg-[#e0e0e0] perspective-[1000px]"
+      onMouseMove={handleMouseMove}
+    >
+      {/* Background Parallax Layer */}
+      <motion.div
+        style={{ y }}
+        className="absolute inset-0 z-0"
+      >
+        <div
+          className="absolute inset-0 bg-cover bg-center scale-110"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1685648043756-124a4adad0ec?q=80&w=2835&auto=format&fit=crop')",
+            filter: "brightness(0.85) contrast(1.1) saturate(0.9) blur(4px)"
+          }}
+        />
+        <div className="absolute inset-0 bg-[#0A1A44]/10 mix-blend-multiply" />
+      </motion.div>
 
-      {/* Overlay for tinting the background if needed */}
-      <div className="absolute inset-0 z-0 bg-amber-50/20 mix-blend-overlay pointer-events-none" />
+      {/* 3D Card Container */}
+      <motion.div
+        style={{ rotateX, rotateY }}
+        className="relative z-10 w-[92%] max-w-[1500px] h-[85vh] bg-[#F8F5F2] rounded-[60px] border border-[#F05A28]/10 shadow-[0_20px_80px_-20px_rgba(10,26,68,0.3)] overflow-hidden flex flex-col items-center justify-center p-8 md:p-16 isolate transform-style-3d"
+      >
+        {/* Grain Overlay on Card */}
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-multiply bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
 
-      {/* Main Card Container */}
-      <div className="relative z-10 w-[95%] max-w-[1400px] bg-artemis-bg rounded-[50px] border-[1px] border-[#7CA5B8]/30 shadow-2xl overflow-hidden min-h-[90vh] flex flex-col justify-between p-8 md:p-12">
+        {/* Floating Images with Parallax Depth */}
+        <ParallaxImage
+          src="https://images.unsplash.com/photo-1571159346336-a29a1b400029?q=80&w=2787&auto=format&fit=crop"
+          alt="Art"
+          className="top-[10%] left-[5%] rotate-[-12deg] w-[180px] aspect-[3/4]"
+          depth={0.15}
+          mouseX={mouseX}
+          mouseY={mouseY}
+        />
 
-        {/* Branding (Centered) */}
-        <div className="w-full flex justify-center pt-4 z-20 relative">
-          <Link to="/" className="flex flex-col items-center leading-none hover:opacity-80 transition-opacity">
-            <h2 className="font-serif text-artemis-orange text-2xl md:text-3xl italic font-bold">Artemis &</h2>
-            <h2 className="font-serif text-artemis-orange text-2xl md:text-3xl italic font-bold ml-8">Artemis</h2>
-          </Link>
-        </div>
+        <ParallaxImage
+          src="https://images.unsplash.com/photo-1615184697985-c9bde1b07da7?q=80&w=2865&auto=format&fit=crop"
+          alt="Abstract"
+          className="bottom-[15%] left-[10%] rotate-[8deg] w-[240px] aspect-[4/3] border-8 border-white"
+          depth={0.25}
+          mouseX={mouseX}
+          mouseY={mouseY}
+        />
 
-        {/* Main Hero Content */}
-        <div className="relative flex flex-col items-center text-center max-w-5xl mx-auto mt-8 md:mt-0 z-20">
-          <span className="text-gray-600 font-heading text-lg mb-4 tracking-wide">This is Artemis</span>
+        <ParallaxImage
+          src="https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2787&auto=format&fit=crop"
+          alt="Green"
+          className="top-[15%] right-[5%] rotate-[12deg] w-[200px] aspect-[3/4] bg-[#0A2A1A]"
+          depth={0.2}
+          mouseX={mouseX}
+          mouseY={mouseY}
+        >
+          <div className="absolute inset-0 flex items-center justify-center text-white font-serif italic text-2xl mix-blend-difference">
+            Art & Design
+          </div>
+        </ParallaxImage>
 
-          <h1 className="font-serif text-artemis-blue text-5xl md:text-7xl lg:text-9xl italic leading-[1.1] mb-6 drop-shadow-sm">
-            Visual and <br/>
-            <span className="relative inline-block ml-4 md:ml-12">
-              Product designer
-            </span>
+        <ParallaxImage
+          src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2864&auto=format&fit=crop"
+          alt="Gradient"
+          className="bottom-[12%] right-[10%] rotate-[-6deg] w-[260px] aspect-[16/10] bg-white p-4 shadow-xl"
+          depth={0.3}
+          mouseX={mouseX}
+          mouseY={mouseY}
+        >
+           <div className="w-full h-full bg-gradient-to-br from-blue-100 to-orange-100 flex items-end p-4">
+             <span className="font-heading text-xs uppercase tracking-widest text-[#0A1A44]">Summer Collection</span>
+           </div>
+        </ParallaxImage>
+
+        {/* Main Content */}
+        <div className="relative z-50 flex flex-col items-center text-center max-w-6xl mx-auto mix-blend-darken">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center gap-4 mb-6"
+          >
+            <span className="w-12 h-[1px] bg-[#0A1A44]/30" />
+            <span className="font-heading text-sm uppercase tracking-[0.3em] text-[#0A1A44]/60">Est. 2024</span>
+            <span className="w-12 h-[1px] bg-[#0A1A44]/30" />
+          </motion.div>
+
+          <h1 className="font-serif italic text-[#0A1A44] text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] tracking-tight mb-8">
+            <div className="flex justify-center gap-[0.2em] flex-wrap">
+              <RevealText text="Visual" delay={0.1} />
+              <span className="font-handwritten text-[#F05A28] text-5xl md:text-7xl lg:text-8xl -rotate-12 self-end mb-4 mx-4">&</span>
+              <RevealText text="Product" delay={0.2} />
+            </div>
+            <div className="block mt-2">
+              <RevealText text="Designer" delay={0.3} className="text-transparent bg-clip-text bg-gradient-to-r from-[#0A1A44] to-[#F05A28]" />
+            </div>
           </h1>
 
-          <span className="text-gray-600 font-heading text-lg mb-12 tracking-wide">startups can count on</span>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 1 }}
+            className="font-heading text-lg md:text-xl text-[#0A1A44]/70 max-w-xl leading-relaxed mb-12"
+          >
+            Crafting digital experiences that feel tangible. Based in the Arts District, brewing ideas daily.
+          </motion.p>
 
-          <button className="bg-artemis-orange text-white px-10 py-4 rounded-full font-heading font-medium text-lg hover:bg-orange-600 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 duration-300">
-            Check out my works
-          </button>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 1, type: "spring" }}
+          >
+            <button className="group relative px-10 py-5 bg-[#0A1A44] rounded-full overflow-hidden shadow-2xl hover:shadow-[#F05A28]/30 transition-shadow duration-500">
+              <div className="absolute inset-0 bg-[#F05A28] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.22,1,0.36,1]" />
+              <span className="relative z-10 font-heading font-medium text-white group-hover:text-white transition-colors uppercase tracking-widest text-sm flex items-center gap-3">
+                Explore Work
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+                  <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
+          </motion.div>
         </div>
 
-        {/* Scattered Images (Absolute Positioned relative to the card content area) */}
-        {/* Top Left - Woman and Dog (Painting) - Tilted Left - Moved further left and smaller */}
+        {/* Scroll Indicator */}
         <motion.div
-          initial={{ opacity: 0, x: -50, rotate: -15 }}
-          animate={{ opacity: 1, x: 0, rotate: -12 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="absolute top-[18%] left-[2%] md:left-[3%] w-28 md:w-40 aspect-[3/4] shadow-xl rounded-sm overflow-hidden hidden lg:block z-10 origin-center"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50"
         >
-          <img src="https://images.unsplash.com/photo-1571159346336-a29a1b400029?q=80&w=2787&auto=format&fit=crop" alt="Painting" className="w-full h-full object-cover grayscale-[20%] sepia-[10%]" />
+          <span className="text-[10px] uppercase tracking-widest">Scroll</span>
+          <div className="w-[1px] h-12 bg-gradient-to-b from-[#0A1A44] to-transparent" />
         </motion.div>
-
-        {/* Top Right - Cassie & Henry (Abstract Green/Black) - Tilted Right - Moved further right and smaller */}
-        <motion.div
-          initial={{ opacity: 0, x: 50, rotate: 15 }}
-          animate={{ opacity: 1, x: 0, rotate: 12 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="absolute top-[20%] right-[2%] md:right-[3%] w-28 md:w-40 aspect-[3/4] shadow-xl rounded-sm overflow-hidden hidden lg:block z-10 origin-center bg-black"
-        >
-           <div className="relative w-full h-full bg-gradient-to-br from-green-900 to-black p-4 flex flex-col items-center justify-center text-white">
-              <span className="font-serif italic text-center text-sm absolute top-4">Cassie & Henry</span>
-              <div className="border border-white/50 rounded-full w-16 h-16 flex items-center justify-center font-serif text-2xl italic">&</div>
-           </div>
-        </motion.div>
-
-        {/* Bottom Left - Colorful Illustration (Red/White/Blue) - Tilted Left */}
-        <motion.div
-          initial={{ opacity: 0, y: 50, rotate: -5 }}
-          animate={{ opacity: 1, y: 0, rotate: -8 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="absolute bottom-[20%] left-[8%] md:left-[12%] w-40 md:w-60 aspect-[4/3] shadow-xl rounded-sm p-3 bg-[#f8f5f2] border border-gray-100 hidden lg:block z-10 origin-center rotate-[-8deg]"
-        >
-          <div className="w-full h-full bg-red-500 relative overflow-hidden flex items-center justify-center">
-             <img src="https://images.unsplash.com/photo-1615184697985-c9bde1b07da7?q=80&w=2865&auto=format&fit=crop" alt="Art" className="w-full h-full object-cover mix-blend-multiply opacity-80" />
-             <div className="absolute inset-0 border-4 border-white m-2"></div>
-          </div>
-        </motion.div>
-
-        {/* Bottom Right - Gradient Card (Blue/Yellow) - Tilted Right */}
-        <motion.div
-          initial={{ opacity: 0, y: 50, rotate: 5 }}
-          animate={{ opacity: 1, y: 0, rotate: 6 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="absolute bottom-[18%] right-[8%] md:right-[12%] w-40 md:w-64 aspect-[16/10] shadow-xl rounded-xl overflow-hidden hidden lg:block z-10 origin-center rotate-[6deg]"
-        >
-          <div className="w-full h-full bg-gradient-to-br from-blue-100 via-white to-yellow-100 p-6 flex flex-col justify-end">
-            <span className="font-serif text-artemis-blue text-xl leading-tight">Ableton<br/>Springs &<br/>Summer</span>
-          </div>
-        </motion.div>
-
-        {/* Footer / Bottom Elements */}
-        <div className="flex flex-col items-center mt-12 md:mt-0 mb-8 z-20 relative">
-          {/* Telescope Icon */}
-          <div className="mb-6 transform scale-110">
-            <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              {/* Telescope Body */}
-              <path d="M25 75 L55 65 L85 45" stroke="#0A1A44" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <rect x="78" y="40" width="18" height="12" transform="rotate(-35 87 46)" fill="#F05A28" stroke="#0A1A44" strokeWidth="2"/>
-              <rect x="25" y="70" width="30" height="12" transform="rotate(-18 40 76)" fill="white" stroke="#0A1A44" strokeWidth="2"/>
-              <path d="M50 70 L50 90 M60 67 L60 90" stroke="#0A1A44" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M45 90 L65 90" stroke="#0A1A44" strokeWidth="2" strokeLinecap="round"/>
-              <circle cx="55" cy="90" r="2.5" fill="#0A1A44"/>
-            </svg>
-          </div>
-
-          <p className="font-serif italic text-2xl md:text-3xl text-gray-700 font-light">Sneak peek of my works</p>
-        </div>
-      </div>
+      </motion.div>
     </section>
+  );
+};
+
+/* Helper Component for Parallax Images */
+const ParallaxImage = ({
+  src,
+  alt,
+  className,
+  depth,
+  mouseX,
+  mouseY,
+  children
+}: {
+  src: string;
+  alt: string;
+  className: string;
+  depth: number;
+  mouseX: any;
+  mouseY: any;
+  children?: React.ReactNode;
+}) => {
+  const x = useTransform(mouseX, [-0.5, 0.5], [-40 * depth, 40 * depth]);
+  const y = useTransform(mouseY, [-0.5, 0.5], [-40 * depth, 40 * depth]);
+
+  return (
+    <motion.div
+      style={{ x, y }}
+      className={`absolute hidden lg:block overflow-hidden shadow-2xl rounded-2xl ${className}`}
+    >
+      {src && <img src={src} alt={alt} className="w-full h-full object-cover grayscale-[10%] hover:grayscale-0 transition-all duration-700 hover:scale-110" />}
+      {children}
+    </motion.div>
   );
 };
 

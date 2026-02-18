@@ -1,126 +1,97 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const LETTERS = "DRIP".split("");
-const MIN_DURATION = 1500;
-
 const Preloader = ({ onComplete }: { onComplete: () => void }) => {
-  const [phase, setPhase] = useState<"typing" | "scatter" | "done">("typing");
-  const [visibleLetters, setVisibleLetters] = useState(0);
-  const [progress, setProgress] = useState(0);
+  const [filled, setFilled] = useState(0);
+  const [isDone, setIsDone] = useState(false);
 
-  // Typewriter effect
   useEffect(() => {
-    if (phase !== "typing") return;
-    if (visibleLetters < LETTERS.length) {
-      const t = setTimeout(() => setVisibleLetters((v) => v + 1), 200);
-      return () => clearTimeout(t);
-    } else {
-      // All letters visible, wait then scatter
-      const t = setTimeout(() => setPhase("scatter"), 400);
-      return () => clearTimeout(t);
-    }
-  }, [phase, visibleLetters]);
+    // Simulate loading progress
+    const interval = setInterval(() => {
+      setFilled((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setIsDone(true), 500);
+          return 100;
+        }
+        return prev + 2; // Adjust speed here
+      });
+    }, 30);
 
-  // Progress bar
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now: number) => {
-      const p = Math.min((now - start) / MIN_DURATION, 1);
-      setProgress(p);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
+    return () => clearInterval(interval);
   }, []);
 
-  // Scatter -> done
   useEffect(() => {
-    if (phase !== "scatter") return;
-    const t = setTimeout(() => setPhase("done"), 800);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  useEffect(() => {
-    if (phase === "done") {
-      const t = setTimeout(onComplete, 500);
-      return () => clearTimeout(t);
+    if (isDone) {
+      const timeout = setTimeout(onComplete, 800); // Wait for exit animation
+      return () => clearTimeout(timeout);
     }
-  }, [phase, onComplete]);
-
-  const scatterAngles = [
-    { x: -120, y: -80, r: -30 },
-    { x: -40, y: -120, r: 20 },
-    { x: 60, y: -100, r: -15 },
-    { x: 140, y: -60, r: 25 },
-  ];
+  }, [isDone, onComplete]);
 
   return (
     <AnimatePresence>
-      {phase !== "done" && (
+      {!isDone && (
         <motion.div
-          exit={{ y: "-100%" }}
-          transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-[10000] flex flex-col items-center justify-center"
-          style={{ background: "#0A0A0A" }}
+          key="preloader"
+          initial={{ opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#F8F5F2] text-[#0A1A44]"
         >
-          {/* Film grain */}
-          <div className="film-grain" style={{ zIndex: 1 }} />
+          {/* Coffee Cup Container */}
+          <div className="relative w-32 h-32 mb-8">
+            {/* Cup Body SVG */}
+            <svg
+              viewBox="0 0 100 100"
+              className="w-full h-full overflow-visible"
+              fill="none"
+              stroke="#0A1A44"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 30 L25 80 C26 90 35 95 50 95 C65 95 74 90 75 80 L80 30" />
+              <path d="M80 40 C90 40 95 45 95 55 C95 65 90 70 80 70" />
+            </svg>
 
-          {/* Letters */}
-          <div className="relative flex gap-1 z-10">
-            {LETTERS.map((letter, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={
-                  phase === "scatter"
-                    ? {
-                        x: scatterAngles[i].x,
-                        y: scatterAngles[i].y,
-                        rotate: scatterAngles[i].r,
-                        opacity: 0,
-                        scale: 0.5,
-                      }
-                    : visibleLetters > i
-                    ? { opacity: 1, y: 0 }
-                    : { opacity: 0, y: 20 }
-                }
-                transition={
-                  phase === "scatter"
-                    ? {
-                        duration: 0.5,
-                        ease: [0.68, -0.55, 0.27, 1.55],
-                        delay: i * 0.05,
-                      }
-                    : { duration: 0.3 }
-                }
-                className="font-heading font-black text-6xl md:text-8xl"
-                style={{ color: "#FF6B35" }}
-              >
-                {letter}
-              </motion.span>
-            ))}
+            {/* Liquid Fill Mask */}
+            <div className="absolute inset-0 overflow-hidden" style={{ clipPath: "path('M20 30 L25 80 C26 90 35 95 50 95 C65 95 74 90 75 80 L80 30 Z')" }}>
+              <motion.div
+                className="absolute bottom-0 left-0 w-full bg-[#F05A28]"
+                style={{ height: `${filled}%` }}
+                transition={{ type: "spring", stiffness: 50 }}
+              />
+              {/* Bubbles / Wave effect could go here */}
+              <motion.div
+                 animate={{ x: ["-10%", "10%", "-10%"] }}
+                 transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                 className="absolute bottom-0 left-[-10%] w-[120%] h-[10px] bg-white/20 rounded-full blur-sm"
+                 style={{ bottom: `${filled}%` }}
+              />
+            </div>
+
+            {/* Steam Animation */}
+            <div className="absolute -top-10 left-0 w-full flex justify-center gap-2">
+               {[0, 1, 2].map((i) => (
+                 <motion.div
+                   key={i}
+                   initial={{ opacity: 0, y: 10 }}
+                   animate={{ opacity: [0, 0.6, 0], y: -20 }}
+                   transition={{
+                     repeat: Infinity,
+                     duration: 2,
+                     delay: i * 0.4,
+                     ease: "easeInOut"
+                   }}
+                   className="w-1.5 h-6 bg-[#0A1A44]/30 rounded-full blur-[1px]"
+                 />
+               ))}
+            </div>
           </div>
 
-          {/* Subtitle */}
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: visibleLetters >= 4 ? 0.5 : 0 }}
-            className="font-handwritten text-lg mt-2 z-10"
-            style={{ color: "#E8D5B7" }}
-          >
-            coffee studio
-          </motion.span>
-
-          {/* Progress bar */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-48 h-[2px] bg-white/5 rounded-full overflow-hidden z-10">
-            <motion.div
-              className="h-full rounded-full"
-              style={{
-                background: "linear-gradient(90deg, #FF6B35, #E8D5B7)",
-                width: `${progress * 100}%`,
-              }}
-            />
+          {/* Loading Text */}
+          <div className="font-heading font-medium tracking-widest text-sm uppercase">
+            Brewing Ideas... {filled}%
           </div>
         </motion.div>
       )}
