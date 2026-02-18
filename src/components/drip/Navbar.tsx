@@ -27,13 +27,13 @@ const BouncyLogo = () => {
   return (
     <Link
       to="/"
-      className="flex flex-col items-center leading-none"
+      className="flex flex-col leading-none"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={(e) => { e.preventDefault(); handleClick(); }}
       aria-label="DRIP Coffee Studio - Home"
     >
-      <span className="flex font-serif italic font-bold text-2xl tracking-wide text-artemis-orange">
+      <span className="flex font-heading font-black text-xl tracking-[0.05em]">
         {letters.map((l, i) => (
           <motion.span
             key={i}
@@ -46,13 +46,8 @@ const BouncyLogo = () => {
                     scale: [1, 0.8, 1],
                   }
                 : hovered
- jules-hero-redesign-artemis-15880237673313619969
-                ? { y: [0, -4, 0], color: ["#F05A28", "#0A1A44", "#F05A28"] }
-                : { y: 0, color: "#F05A28", x: 0, rotate: 0, scale: 1 }
-
                 ? { y: [0, -6, 0], color: ["#EA580C", "#3B8EA5", "#EA580C"] }
                 : { y: 0, color: "#EA580C", x: 0, rotate: 0, scale: 1 }
- main
             }
             transition={
               scattering
@@ -67,7 +62,7 @@ const BouncyLogo = () => {
           </motion.span>
         ))}
       </span>
-      <span className="font-heading text-[10px] text-artemis-blue/60 uppercase tracking-widest mt-1">coffee studio</span>
+      <span className="font-handwritten text-[10px] text-foreground/50 -mt-0.5">coffee studio</span>
     </Link>
   );
 };
@@ -108,13 +103,13 @@ const NavLink = ({ item }: { item: typeof NAV_ITEMS[0] }) => {
       to={item.href}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`relative lowercase text-sm font-medium tracking-wide transition-colors duration-300 font-heading ${
-        isActive ? "text-artemis-orange" : "text-artemis-blue/70 hover:text-artemis-orange"
+      className={`relative lowercase text-sm font-medium tracking-wide transition-colors duration-300 ${
+        isActive ? "text-primary" : "text-foreground/70 hover:text-primary"
       }`}
     >
       {display}
       <motion.span
-        className="absolute -bottom-1 left-1/2 w-1 h-1 rounded-full bg-artemis-orange"
+        className="absolute -bottom-1 left-1/2 w-1 h-1 rounded-full bg-primary"
         initial={false}
         animate={{
           scale: isActive || hovered ? 1 : 0,
@@ -155,9 +150,9 @@ const Navbar = () => {
         animate={{ y: hidden && !mobileOpen ? "-100%" : "0%" }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-artemis-border/20" : "bg-transparent border-transparent"
+          scrolled ? "glass-dark !border-x-0 !border-t-0 !rounded-none" : "bg-transparent border-transparent"
         }`}
-        style={{ height: scrolled ? 60 : 80 }}
+        style={{ height: scrolled ? 60 : 72 }}
         role="navigation"
         aria-label="Main navigation"
       >
@@ -175,7 +170,7 @@ const Navbar = () => {
           <div className="hidden md:block">
             <Link
               to="/#reservation"
-              className="px-6 py-2 rounded-full bg-artemis-orange text-white text-sm font-heading font-medium lowercase hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg"
+              className="glass-pill !py-2 !px-5 !border-primary/30 text-primary text-sm font-heading font-medium lowercase hover:bg-primary hover:text-primary-foreground transition-all duration-300"
             >
               reserve
             </Link>
@@ -190,15 +185,15 @@ const Navbar = () => {
           >
             <motion.span
               animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-artemis-blue rounded-full origin-center"
+              className="block w-6 h-0.5 bg-primary rounded-full origin-center"
             />
             <motion.span
               animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-              className="block w-6 h-0.5 bg-artemis-blue rounded-full"
+              className="block w-6 h-0.5 bg-primary rounded-full"
             />
             <motion.span
               animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="block w-6 h-0.5 bg-artemis-blue rounded-full origin-center"
+              className="block w-6 h-0.5 bg-primary rounded-full origin-center"
             />
           </button>
         </div>
@@ -212,7 +207,7 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 bg-artemis-bg flex flex-col items-center justify-center gap-8"
+            className="fixed inset-0 z-40 glass-heavy !rounded-none flex flex-col items-center justify-center gap-8"
             role="dialog"
             aria-label="Mobile navigation menu"
           >
@@ -227,7 +222,7 @@ const Navbar = () => {
                 <Link
                   to={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className="font-serif italic font-bold text-4xl lowercase text-artemis-blue hover:text-artemis-orange transition-colors"
+                  className="font-heading font-bold text-4xl lowercase text-foreground/80 hover:text-primary transition-colors"
                 >
                   {item.label}
                 </Link>
@@ -244,7 +239,7 @@ const Navbar = () => {
               <Link
                 to="/#reservation"
                 onClick={() => setMobileOpen(false)}
-                className="bg-artemis-orange text-white rounded-full px-8 py-3 font-heading font-semibold lowercase hover:bg-orange-600 transition-colors"
+                className="bg-primary text-primary-foreground rounded-full px-8 py-3 font-heading font-semibold lowercase"
               >
                 reserve a table
               </Link>
@@ -256,9 +251,9 @@ const Navbar = () => {
               transition={{ delay: 0.6 }}
               className="absolute bottom-8 text-center space-y-2"
             >
-              <p className="font-heading text-artemis-blue/50 text-sm">420 Brew Street, Arts District</p>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-gray-200 text-[10px] font-mono uppercase tracking-wider text-artemis-orange">
-                <span className="w-1.5 h-1.5 rounded-full bg-artemis-orange animate-pulse" />
+              <p className="font-handwritten text-foreground/30 text-sm">420 Brew Street, Arts District</p>
+              <div className="glass-pill !py-1 !px-3 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-accent">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
                 open now
               </div>
             </motion.div>
