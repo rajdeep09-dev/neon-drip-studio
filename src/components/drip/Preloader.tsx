@@ -95,7 +95,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
                     : { duration: 0.3 }
                 }
                 className="font-heading font-black text-6xl md:text-8xl"
-                style={{ color: "#FF6B35" }}
+                style={{ color: "#EA580C" }}
               >
                 {letter}
               </motion.span>
@@ -107,7 +107,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: visibleLetters >= 4 ? 0.5 : 0 }}
             className="font-handwritten text-lg mt-2 z-10"
-            style={{ color: "#E8D5B7" }}
+            style={{ color: "#3B8EA5" }}
           >
             coffee studio
           </motion.span>
@@ -117,7 +117,7 @@ const Preloader = ({ onComplete }: { onComplete: () => void }) => {
             <motion.div
               className="h-full rounded-full"
               style={{
-                background: "linear-gradient(90deg, #FF6B35, #E8D5B7)",
+                background: "linear-gradient(90deg, #EA580C, #3B8EA5)",
                 width: `${progress * 100}%`,
               }}
             />
