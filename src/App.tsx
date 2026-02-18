@@ -23,6 +23,7 @@ import PageTransition from "./components/drip/PageTransition";
 import SkipToContent from "./components/drip/SkipToContent";
 import LocalBusinessSchema from "./components/drip/LocalBusinessSchema";
 import NoiseOverlay from "./components/drip/NoiseOverlay";
+import SmoothScrollLayout from "./components/drip/SmoothScrollLayout";
 import { useKonamiCode } from "./hooks/useEasterEggs";
 
 const queryClient = new QueryClient();
@@ -70,7 +71,9 @@ const App = () => {
           <SpotlightFollow />
           <KonamiWrapper>
             <BrowserRouter>
-              <AnimatedRoutes />
+              <SmoothScrollLayout>
+                <AnimatedRoutes />
+              </SmoothScrollLayout>
             </BrowserRouter>
           </KonamiWrapper>
         </TooltipProvider>
