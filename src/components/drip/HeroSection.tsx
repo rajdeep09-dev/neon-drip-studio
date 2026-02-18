@@ -1,27 +1,83 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
-import { Link } from "react-router-dom";
 
-/* Text Reveal Component */
-const RevealText = ({ text, delay = 0, className = "" }: { text: string; delay?: number; className?: string }) => (
-  <span className={`inline-block overflow-hidden align-bottom ${className}`}>
-    <motion.span
-      initial={{ y: "110%" }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1], delay }}
-      className="inline-block"
+/* --- Reusable Components --- */
+
+const RevealText = ({ text, delay = 0, className = "" }: { text: string; delay?: number; className?: string }) => {
+  return (
+    <span className={`inline-block overflow-hidden align-bottom ${className}`}>
+      {text.split("").map((char, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: "100%", rotate: 10, opacity: 0 }}
+          animate={{ y: 0, rotate: 0, opacity: 1 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.22, 1, 0.36, 1],
+            delay: delay + i * 0.03,
+          }}
+          className="inline-block origin-bottom-left"
+        >
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ))}
+    </span>
+  );
+};
+
+const MagneticButton = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+  const ref = useRef<HTMLButtonElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    x.set((e.clientX - centerX) * 0.3);
+    y.set((e.clientY - centerY) * 0.3);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.button
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ x, y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      className={`relative overflow-hidden group ${className}`}
     >
-      {text}
-    </motion.span>
-  </span>
-);
+      <span className="relative z-10 block transition-transform duration-500 group-hover:-translate-y-[120%]">
+        {children}
+      </span>
+      <span className="absolute inset-0 z-10 block transition-transform duration-500 translate-y-[120%] group-hover:translate-y-0 flex items-center justify-center">
+        {children}
+      </span>
+      <div className="absolute inset-0 bg-[#F05A28] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.22,1,0.36,1] rounded-full" />
+    </motion.button>
+  );
+};
+
+/* --- Hero Section --- */
 
 const HeroSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
 
-  // Parallax Mouse Effect
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  // Mouse Parallax
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -32,175 +88,109 @@ const HeroSection = () => {
     mouseY.set(clientY / innerHeight - 0.5);
   };
 
-  const springConfig = { damping: 25, stiffness: 150 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), springConfig);
-
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[110vh] w-full flex items-center justify-center overflow-hidden bg-[#e0e0e0] perspective-[1000px]"
+      className="relative h-screen w-full overflow-hidden bg-[#0A1A44] text-[#F8F5F2]"
       onMouseMove={handleMouseMove}
     >
-      {/* Background Parallax Layer */}
-      <motion.div
-        style={{ y }}
-        className="absolute inset-0 z-0"
-      >
+      {/* Background Video/Image Layer */}
+      <motion.div style={{ y, scale }} className="absolute inset-0 z-0">
         <div
-          className="absolute inset-0 bg-cover bg-center scale-110"
+          className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1685648043756-124a4adad0ec?q=80&w=2835&auto=format&fit=crop')",
-            filter: "brightness(0.85) contrast(1.1) saturate(0.9) blur(4px)"
+            backgroundImage: "url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2942&auto=format&fit=crop')", // High-end coffee aesthetic
+            filter: "brightness(0.6) contrast(1.1)",
           }}
         />
-        <div className="absolute inset-0 bg-[#0A1A44]/10 mix-blend-multiply" />
+        {/* Grain Overlay */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A1A44]/30 via-transparent to-[#0A1A44]" />
       </motion.div>
 
-      {/* 3D Card Container */}
-      <motion.div
-        style={{ rotateX, rotateY }}
-        className="relative z-10 w-[92%] max-w-[1500px] h-[85vh] bg-[#F8F5F2] rounded-[60px] border border-[#F05A28]/10 shadow-[0_20px_80px_-20px_rgba(10,26,68,0.3)] overflow-hidden flex flex-col items-center justify-center p-8 md:p-16 isolate transform-style-3d"
-      >
-        {/* Grain Overlay on Card */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none mix-blend-multiply bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+      {/* Content Container */}
+      <div className="relative z-10 h-full flex flex-col justify-center items-center px-4 md:px-12 pointer-events-none">
 
-        {/* Floating Images with Parallax Depth */}
-        <ParallaxImage
-          src="https://images.unsplash.com/photo-1571159346336-a29a1b400029?q=80&w=2787&auto=format&fit=crop"
-          alt="Art"
-          className="top-[10%] left-[5%] rotate-[-12deg] w-[180px] aspect-[3/4]"
-          depth={0.15}
-          mouseX={mouseX}
-          mouseY={mouseY}
-        />
-
-        <ParallaxImage
-          src="https://images.unsplash.com/photo-1615184697985-c9bde1b07da7?q=80&w=2865&auto=format&fit=crop"
-          alt="Abstract"
-          className="bottom-[15%] left-[10%] rotate-[8deg] w-[240px] aspect-[4/3] border-8 border-white"
-          depth={0.25}
-          mouseX={mouseX}
-          mouseY={mouseY}
-        />
-
-        <ParallaxImage
-          src="https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=2787&auto=format&fit=crop"
-          alt="Green"
-          className="top-[15%] right-[5%] rotate-[12deg] w-[200px] aspect-[3/4] bg-[#0A2A1A]"
-          depth={0.2}
-          mouseX={mouseX}
-          mouseY={mouseY}
+        {/* Top Label */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="absolute top-32 md:top-40 text-center"
         >
-          <div className="absolute inset-0 flex items-center justify-center text-white font-serif italic text-2xl mix-blend-difference">
-            Art & Design
-          </div>
-        </ParallaxImage>
+          <span className="font-mono-label text-xs uppercase tracking-[0.4em] text-[#F05A28]">
+            Est. 2024 • Los Angeles
+          </span>
+        </motion.div>
 
-        <ParallaxImage
-          src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2864&auto=format&fit=crop"
-          alt="Gradient"
-          className="bottom-[12%] right-[10%] rotate-[-6deg] w-[260px] aspect-[16/10] bg-white p-4 shadow-xl"
-          depth={0.3}
-          mouseX={mouseX}
-          mouseY={mouseY}
-        >
-           <div className="w-full h-full bg-gradient-to-br from-blue-100 to-orange-100 flex items-end p-4">
-             <span className="font-heading text-xs uppercase tracking-widest text-[#0A1A44]">Summer Collection</span>
-           </div>
-        </ParallaxImage>
-
-        {/* Main Content */}
-        <div className="relative z-50 flex flex-col items-center text-center max-w-6xl mx-auto mix-blend-darken">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center gap-4 mb-6"
-          >
-            <span className="w-12 h-[1px] bg-[#0A1A44]/30" />
-            <span className="font-heading text-sm uppercase tracking-[0.3em] text-[#0A1A44]/60">Est. 2024</span>
-            <span className="w-12 h-[1px] bg-[#0A1A44]/30" />
-          </motion.div>
-
-          <h1 className="font-serif italic text-[#0A1A44] text-6xl md:text-8xl lg:text-[10rem] leading-[0.9] tracking-tight mb-8">
-            <div className="flex justify-center gap-[0.2em] flex-wrap">
-              <RevealText text="Visual" delay={0.1} />
-              <span className="font-handwritten text-[#F05A28] text-5xl md:text-7xl lg:text-8xl -rotate-12 self-end mb-4 mx-4">&</span>
-              <RevealText text="Product" delay={0.2} />
-            </div>
-            <div className="block mt-2">
-              <RevealText text="Designer" delay={0.3} className="text-transparent bg-clip-text bg-gradient-to-r from-[#0A1A44] to-[#F05A28]" />
-            </div>
+        {/* Main Headline - Massive Typography */}
+        <div className="flex flex-col items-center leading-[0.85] tracking-tighter mix-blend-difference">
+          <h1 className="font-serif italic text-[15vw] md:text-[12rem] text-white whitespace-nowrap overflow-visible">
+            <RevealText text="Visual" delay={0.2} />
           </h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 1 }}
-            className="font-heading text-lg md:text-xl text-[#0A1A44]/70 max-w-xl leading-relaxed mb-12"
-          >
-            Crafting digital experiences that feel tangible. Based in the Arts District, brewing ideas daily.
-          </motion.p>
-
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 1, type: "spring" }}
-          >
-            <button className="group relative px-10 py-5 bg-[#0A1A44] rounded-full overflow-hidden shadow-2xl hover:shadow-[#F05A28]/30 transition-shadow duration-500">
-              <div className="absolute inset-0 bg-[#F05A28] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[0.22,1,0.36,1]" />
-              <span className="relative z-10 font-heading font-medium text-white group-hover:text-white transition-colors uppercase tracking-widest text-sm flex items-center gap-3">
-                Explore Work
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
-                  <path d="M1 11L11 1M11 1H3M11 1V9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </span>
-            </button>
-          </motion.div>
+          <div className="flex items-center gap-4 md:gap-12 w-full justify-center">
+            <motion.span
+              initial={{ scale: 0, rotate: -45 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
+              className="font-handwritten text-[#F05A28] text-[8vw] md:text-[6rem]"
+            >
+              &
+            </motion.span>
+            <h1 className="font-heading font-light text-[12vw] md:text-[10rem] text-white uppercase tracking-tight">
+              <RevealText text="Product" delay={0.4} />
+            </h1>
+          </div>
+          <h1 className="font-serif italic text-[15vw] md:text-[12rem] text-white whitespace-nowrap overflow-visible text-right w-full pr-[10%]">
+            <RevealText text="Designer" delay={0.6} />
+          </h1>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* Floating Abstract Elements (Parallax) */}
+        <ParallaxElement mouseX={mouseX} mouseY={mouseY} depth={0.05} className="absolute top-[20%] left-[10%] w-[15vw] aspect-[3/4] hidden lg:block">
+           <div className="w-full h-full bg-[#F05A28] rounded-full blur-[80px] opacity-40 mix-blend-screen" />
+        </ParallaxElement>
+
+        <ParallaxElement mouseX={mouseX} mouseY={mouseY} depth={0.08} className="absolute bottom-[20%] right-[10%] w-[20vw] aspect-square hidden lg:block">
+           <div className="w-full h-full bg-[#7CA5B8] rounded-full blur-[100px] opacity-30 mix-blend-screen" />
+        </ParallaxElement>
+
+        {/* Bottom CTA Area */}
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50"
+          style={{ opacity }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute bottom-12 md:bottom-20 w-full flex justify-between items-end px-4 md:px-0 max-w-[1400px] pointer-events-auto"
         >
-          <span className="text-[10px] uppercase tracking-widest">Scroll</span>
-          <div className="w-[1px] h-12 bg-gradient-to-b from-[#0A1A44] to-transparent" />
+          <div className="hidden md:block w-1/3 text-xs font-mono-label uppercase tracking-widest text-white/50">
+            Scroll to explore<br />the collection
+          </div>
+
+          <div className="w-full md:w-1/3 flex justify-center">
+            <MagneticButton className="px-10 py-5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-heading font-medium uppercase tracking-widest text-sm hover:border-transparent transition-colors">
+              View Projects
+            </MagneticButton>
+          </div>
+
+          <div className="hidden md:flex w-1/3 justify-end gap-8 text-xs font-mono-label uppercase tracking-widest text-white/50">
+            <span>(001)</span>
+            <span>Design</span>
+            <span>(002)</span>
+            <span>Code</span>
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 };
 
-/* Helper Component for Parallax Images */
-const ParallaxImage = ({
-  src,
-  alt,
-  className,
-  depth,
-  mouseX,
-  mouseY,
-  children
-}: {
-  src: string;
-  alt: string;
-  className: string;
-  depth: number;
-  mouseX: any;
-  mouseY: any;
-  children?: React.ReactNode;
-}) => {
-  const x = useTransform(mouseX, [-0.5, 0.5], [-40 * depth, 40 * depth]);
-  const y = useTransform(mouseY, [-0.5, 0.5], [-40 * depth, 40 * depth]);
-
+const ParallaxElement = ({ mouseX, mouseY, depth, children, className }: any) => {
+  const x = useTransform(mouseX, [-0.5, 0.5], [-100 * depth, 100 * depth]);
+  const y = useTransform(mouseY, [-0.5, 0.5], [-100 * depth, 100 * depth]);
   return (
-    <motion.div
-      style={{ x, y }}
-      className={`absolute hidden lg:block overflow-hidden shadow-2xl rounded-2xl ${className}`}
-    >
-      {src && <img src={src} alt={alt} className="w-full h-full object-cover grayscale-[10%] hover:grayscale-0 transition-all duration-700 hover:scale-110" />}
+    <motion.div style={{ x, y }} className={className}>
       {children}
     </motion.div>
   );
