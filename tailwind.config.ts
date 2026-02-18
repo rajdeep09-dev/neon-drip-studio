@@ -18,8 +18,13 @@ export default {
         body: ["Space Grotesk", "system-ui", "sans-serif"],
         handwritten: ["Caveat", "cursive"],
         mono: ["JetBrains Mono", "monospace"],
+        serif: ["Playfair Display", "serif"],
       },
       colors: {
+        "artemis-bg": "#F8F5F2",
+        "artemis-blue": "#0A1A44",
+        "artemis-orange": "#F05A28",
+        "artemis-border": "#7CA5B8",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
