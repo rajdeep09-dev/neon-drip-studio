@@ -29,7 +29,7 @@ const CountUpNumber = ({ target, suffix }: { target: number; suffix: string }) =
   }, [inView, target]);
 
   return (
-    <span ref={ref} className="font-mono text-3xl md:text-4xl font-bold text-primary">
+    <span ref={ref} className="font-serif italic text-3xl md:text-4xl font-bold text-artemis-orange">
       {count}{suffix}
     </span>
   );
@@ -52,7 +52,7 @@ const AboutSection = () => {
   const inView = useInView(sectionRef, { once: true, margin: "-100px" });
 
   return (
-    <section ref={sectionRef} className="relative z-10 py-24 md:py-32 px-6 max-w-7xl mx-auto">
+    <section ref={sectionRef} className="relative z-10 py-24 md:py-32 px-6 max-w-7xl mx-auto bg-artemis-bg">
       <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
         {/* Image side */}
         <motion.div
@@ -61,17 +61,20 @@ const AboutSection = () => {
           transition={{ duration: 0.9, ease }}
           className="relative"
         >
-          <div className="absolute -inset-4 glass-teal rotate-[6deg] -z-10" style={{ borderRadius: "30px" }} />
+          {/* Card Style Background */}
+          <div className="absolute -inset-4 bg-white rounded-[40px] shadow-lg border border-[#7CA5B8]/20 rotate-[3deg] -z-10" />
+
           <div
-            className="relative overflow-hidden bg-muted"
-            style={{ borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%", aspectRatio: "4/5" }}
+            className="relative overflow-hidden bg-gray-100 rounded-[35px] aspect-[4/5] shadow-inner"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-accent/10" />
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="font-handwritten text-5xl text-foreground/20">☕</span>
-            </div>
+             {/* Placeholder Image */}
+             <img
+               src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2942&auto=format&fit=crop"
+               alt="Coffee Shop Interior"
+               className="w-full h-full object-cover grayscale-[20%] sepia-[10%]"
+             />
           </div>
-          <div className="absolute bottom-4 right-4 glass-pill glass-animated-border font-handwritten text-sm text-foreground/70">
+          <div className="absolute bottom-6 right-6 bg-white px-6 py-2 rounded-full shadow-lg border border-[#7CA5B8]/20 font-serif italic text-sm text-artemis-blue">
             small batch only
           </div>
         </motion.div>
@@ -79,22 +82,24 @@ const AboutSection = () => {
         {/* Text side */}
         <motion.div variants={stagger} initial="hidden" animate={inView ? "visible" : "hidden"} className="space-y-8">
           <motion.div variants={fadeUp}>
-            <span className="glass-pill font-handwritten text-primary text-lg inline-block -rotate-3">who we are ↓</span>
+            <span className="inline-block px-4 py-1 rounded-full border border-artemis-orange/30 text-artemis-orange font-serif italic text-lg -rotate-2 bg-orange-50/50">
+              who we are
+            </span>
           </motion.div>
 
-          <motion.h2 variants={fadeUp} className="font-heading font-bold text-3xl md:text-5xl lg:text-6xl leading-[1.1] lowercase">
-            we make coffee that <span className="text-gradient-hero">actually slaps</span>.
+          <motion.h2 variants={fadeUp} className="font-serif italic text-artemis-blue text-4xl md:text-6xl lg:text-7xl leading-[1.1]">
+            we make coffee that <span className="text-artemis-orange underline decoration-wavy decoration-2 underline-offset-4">actually slaps</span>.
           </motion.h2>
 
-          <motion.p variants={fadeUp} className="text-foreground/60 text-base md:text-lg leading-relaxed max-w-lg">
+          <motion.p variants={fadeUp} className="text-gray-600 text-base md:text-lg leading-relaxed max-w-lg font-heading">
             we started drip because we were tired of burnt, overpriced coffee served by people who clearly hate their jobs. our beans are sourced directly from small farms, roasted in-house, and served by people who genuinely love what they do. no pretension. no gatekeeping. just really, really good coffee.
           </motion.p>
 
           <motion.div variants={fadeUp} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {stats.map((stat, i) => (
-              <div key={i} className="glass-pill glass-hover text-center py-4 px-3">
+              <div key={i} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow">
                 <CountUpNumber target={stat.number} suffix={stat.suffix} />
-                <p className="text-foreground/50 text-xs mt-1 font-mono uppercase tracking-wider">{stat.label}</p>
+                <p className="text-gray-400 text-xs mt-2 font-heading uppercase tracking-widest">{stat.label}</p>
               </div>
             ))}
           </motion.div>

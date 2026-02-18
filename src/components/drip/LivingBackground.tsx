@@ -37,9 +37,9 @@ const LivingBackground = () => {
       el.style.height = `${size * 1.4}px`;
       el.style.borderRadius = "50% 0 50% 0";
       const colors = [
-        "rgba(232, 213, 183, 0.08)",
-        "rgba(255, 107, 53, 0.06)",
-        "rgba(78, 205, 196, 0.05)",
+        "rgba(10, 26, 68, 0.08)", // Artemis Blue
+        "rgba(240, 90, 40, 0.06)", // Artemis Orange
+        "rgba(124, 165, 184, 0.05)", // Muted Blue/Teal
       ];
       el.style.background = colors[Math.floor(Math.random() * colors.length)];
     } else if (type === 1) {
@@ -47,13 +47,13 @@ const LivingBackground = () => {
       el.style.width = `${size * 0.6}px`;
       el.style.height = `${size}px`;
       el.style.borderRadius = "50%";
-      el.style.background = "rgba(232, 213, 183, 0.06)";
+      el.style.background = "rgba(10, 26, 68, 0.06)"; // Artemis Blue
     } else {
       // Dot
       el.style.width = `${size * 0.4}px`;
       el.style.height = `${size * 0.4}px`;
       el.style.borderRadius = "50%";
-      el.style.background = "rgba(232, 213, 183, 0.1)";
+      el.style.background = "rgba(240, 90, 40, 0.1)"; // Artemis Orange
     }
 
     return el;
@@ -147,12 +147,12 @@ const LivingBackground = () => {
       {/* Layer 0: Dot grid */}
       <div className="fixed inset-0 dot-grid z-0 pointer-events-none" aria-hidden="true" />
 
-      {/* Layer 1: Animated mesh gradient blobs */}
+      {/* Layer 1: Animated mesh gradient blobs - Updated Colors */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" aria-hidden="true">
         <div
           className="absolute w-[600px] h-[600px] rounded-full opacity-100"
           style={{
-            background: "radial-gradient(circle, rgba(255,107,53,0.06) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(240, 90, 40, 0.06) 0%, transparent 70%)", // Orange
             filter: "blur(100px)",
             animation: "float 30s ease-in-out infinite",
             left: "10%",
@@ -162,7 +162,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[500px] h-[500px] rounded-full"
           style={{
-            background: "radial-gradient(circle, rgba(78,205,196,0.04) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(124, 165, 184, 0.06) 0%, transparent 70%)", // Blue/Teal
             filter: "blur(100px)",
             animation: "float-alt 40s ease-in-out infinite",
             right: "10%",
@@ -172,7 +172,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[400px] h-[400px] rounded-full"
           style={{
-            background: "radial-gradient(circle, rgba(232,213,183,0.05) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(10, 26, 68, 0.03) 0%, transparent 70%)", // Dark Blue
             filter: "blur(80px)",
             animation: "float 50s ease-in-out infinite reverse",
             left: "50%",

@@ -19,12 +19,12 @@ const LocationSection = () => {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="relative z-10 py-24 md:py-32 px-6 max-w-7xl mx-auto">
+    <section ref={ref} className="relative z-10 py-24 md:py-32 px-6 max-w-7xl mx-auto bg-artemis-bg">
       <div className="text-center mb-16 space-y-4">
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          className="glass-pill font-handwritten text-accent text-lg inline-block"
+          className="inline-block px-4 py-1 rounded-full border border-artemis-orange/30 text-artemis-orange font-serif italic text-lg bg-orange-50/50"
         >
           find us irl
         </motion.span>
@@ -32,10 +32,10 @@ const LocationSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.15, duration: 0.7, ease }}
-          className="font-heading font-bold text-3xl md:text-5xl lowercase leading-tight"
+          className="font-serif italic text-artemis-blue text-4xl md:text-6xl lowercase leading-tight"
         >
-          <span className="text-primary">come hang.</span> we don't bite.{" "}
-          <span className="font-handwritten text-foreground/50">(the coffee might though)</span>
+          <span className="text-artemis-orange">come hang.</span> we don't bite.{" "}
+          <span className="font-heading text-lg text-gray-400 block mt-2">(the coffee might though)</span>
         </motion.h2>
       </div>
 
@@ -45,14 +45,18 @@ const LocationSection = () => {
           initial={{ opacity: 0, x: -80, scale: 0.95 }}
           animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
           transition={{ duration: 0.8, ease }}
-          className="glass-light p-1 overflow-hidden"
-          style={{ borderRadius: "24px" }}
+          className="bg-white rounded-[30px] p-2 overflow-hidden shadow-lg border border-gray-100"
         >
-          <div className="w-full aspect-[4/3] bg-muted rounded-[20px] flex items-center justify-center relative group cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 rounded-[20px]" />
-            <div className="text-center space-y-2">
-              <span className="text-4xl">🗺️</span>
-              <p className="font-handwritten text-foreground/40 text-lg">tap to explore</p>
+          <div className="w-full aspect-[4/3] bg-gray-100 rounded-[24px] flex items-center justify-center relative group cursor-pointer overflow-hidden">
+             {/* Use a map image placeholder */}
+             <img
+               src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2948&auto=format&fit=crop"
+               alt="Map"
+               className="absolute inset-0 w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+             />
+            <div className="text-center space-y-2 relative z-10 bg-white/80 backdrop-blur px-6 py-3 rounded-full shadow-sm">
+              <span className="text-2xl">🗺️</span>
+              <p className="font-serif italic text-artemis-blue text-lg">tap to explore</p>
             </div>
           </div>
         </motion.div>
@@ -62,7 +66,7 @@ const LocationSection = () => {
           initial={{ opacity: 0, x: 80, scale: 0.95 }}
           animate={inView ? { opacity: 1, x: 0, scale: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.2, ease }}
-          className="glass-light p-8 space-y-1"
+          className="bg-white rounded-[30px] p-8 space-y-2 shadow-lg border border-gray-100"
         >
           {infoItems.map((item, i) => (
             <motion.div
@@ -70,21 +74,21 @@ const LocationSection = () => {
               initial={{ opacity: 0, x: 20 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ delay: 0.4 + i * 0.08, duration: 0.5, ease }}
-              className="flex items-start gap-4 py-3 border-b border-foreground/[0.05] last:border-0"
+              className="flex items-start gap-4 py-4 border-b border-gray-100 last:border-0"
             >
-              <span className="text-lg shrink-0">{item.icon}</span>
+              <span className="text-xl shrink-0">{item.icon}</span>
               <div>
-                <span className="block text-[10px] font-mono uppercase tracking-wider text-foreground/30 mb-0.5">
+                <span className="block text-[10px] font-heading uppercase tracking-wider text-gray-400 mb-1">
                   {item.label}
                 </span>
-                <span className="text-foreground/80 text-sm">{item.value}</span>
+                <span className="text-artemis-blue text-base font-serif italic">{item.value}</span>
               </div>
             </motion.div>
           ))}
 
           {/* Handwritten annotation */}
-          <div className="pt-4">
-            <span className="font-handwritten text-primary/60 text-base inline-block rotate-[-2deg]">
+          <div className="pt-6 text-center">
+            <span className="font-serif italic text-artemis-orange text-lg inline-block rotate-[-2deg] bg-orange-50 px-4 py-1 rounded-full border border-orange-100">
               we never close early, pinky promise ✌️
             </span>
           </div>
