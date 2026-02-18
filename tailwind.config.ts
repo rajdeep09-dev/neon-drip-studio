@@ -19,6 +19,8 @@ export default {
         handwritten: ["Caveat", "cursive"],
         mono: ["JetBrains Mono", "monospace"],
         serif: ["Playfair Display", "serif"],
+        poppins: ["Poppins", "sans-serif"],
+        brush: ["Satisfy", "cursive"],
       },
       colors: {
         "artemis-bg": "#F8F5F2",
