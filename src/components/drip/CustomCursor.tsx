@@ -155,18 +155,18 @@ const CustomCursor = () => {
       if (state === "link") {
         dotScale = 0.5;
         ringSize = 56;
-        ring.style.background = "rgba(234, 88, 12, 0.08)";
-        ring.style.borderColor = "rgba(234, 88, 12, 0.3)";
+        ring.style.background = "rgba(255, 107, 53, 0.08)";
+        ring.style.borderColor = "rgba(255, 107, 53, 0.3)";
       } else if (state === "image") {
         dotScale = 0;
         ringSize = 72;
-        ring.style.background = "rgba(234, 88, 12, 0.06)";
-        ring.style.borderColor = "rgba(234, 234, 234, 0.3)";
+        ring.style.background = "rgba(255, 107, 53, 0.06)";
+        ring.style.borderColor = "rgba(232, 213, 183, 0.3)";
       } else if (state === "gallery") {
         dotScale = 0;
         ringSize = 80;
-        ring.style.background = "rgba(234, 88, 12, 0.1)";
-        ring.style.borderColor = "rgba(234, 88, 12, 0.3)";
+        ring.style.background = "rgba(255, 107, 53, 0.1)";
+        ring.style.borderColor = "rgba(255, 107, 53, 0.3)";
       } else if (state === "text") {
         dotScale = 0;
         ringScale = 0;
@@ -175,10 +175,10 @@ const CustomCursor = () => {
         dotScale = 1.5;
         ringScale = 0.8;
         ring.style.background = "transparent";
-        ring.style.borderColor = "rgba(234, 234, 234, 0.5)";
+        ring.style.borderColor = "rgba(232, 213, 183, 0.5)";
       } else {
         ring.style.background = "transparent";
-        ring.style.borderColor = "rgba(234, 234, 234, 0.5)";
+        ring.style.borderColor = "rgba(232, 213, 183, 0.5)";
       }
 
       // Apply dot
@@ -264,7 +264,7 @@ const CustomCursor = () => {
           ref={(el) => { if (el) trailRefs.current[i] = el; }}
           className="fixed top-0 left-0 rounded-full"
           style={{
-            background: "#EA580C",
+            background: "#FF6B35",
             willChange: "transform, opacity",
             opacity: 0,
             transition: "none",
@@ -279,7 +279,7 @@ const CustomCursor = () => {
         style={{
           width: 6,
           height: 6,
-          background: "#EA580C",
+          background: "#FF6B35",
           borderRadius: "50%",
           mixBlendMode: "difference",
           willChange: "transform",
@@ -295,7 +295,7 @@ const CustomCursor = () => {
         style={{
           width: 32,
           height: 32,
-          border: "1.5px solid rgba(234, 234, 234, 0.5)",
+          border: "1.5px solid rgba(232, 213, 183, 0.5)",
           borderRadius: "50%",
           willChange: "transform, width, height",
           transition: "width 0.3s cubic-bezier(0.25,0.1,0.25,1), height 0.3s cubic-bezier(0.25,0.1,0.25,1), background 0.3s, border-color 0.3s",
@@ -306,7 +306,7 @@ const CustomCursor = () => {
           ref={ringTextRef}
           className="font-handwritten text-xs"
           style={{
-            color: "#EAEAEA",
+            color: "#E8D5B7",
             opacity: 0,
             transition: "opacity 0.2s",
             pointerEvents: "none",

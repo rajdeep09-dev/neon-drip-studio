@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from "react";
 
-const LEAF_COUNT_DESKTOP = 8;
-const LEAF_COUNT_MOBILE = 4;
+const LEAF_COUNT_DESKTOP = 20;
+const LEAF_COUNT_MOBILE = 10;
 
 interface Leaf {
   el: HTMLDivElement;
@@ -37,15 +37,9 @@ const LivingBackground = () => {
       el.style.height = `${size * 1.4}px`;
       el.style.borderRadius = "50% 0 50% 0";
       const colors = [
- jules-hero-redesign-artemis-15880237673313619969
         "rgba(10, 26, 68, 0.08)", // Artemis Blue
         "rgba(240, 90, 40, 0.06)", // Artemis Orange
         "rgba(124, 165, 184, 0.05)", // Muted Blue/Teal
-
-        "rgba(234, 234, 234, 0.08)",
-        "rgba(234, 88, 12, 0.06)",
-        "rgba(59, 142, 165, 0.05)",
- main
       ];
       el.style.background = colors[Math.floor(Math.random() * colors.length)];
     } else if (type === 1) {
@@ -53,21 +47,13 @@ const LivingBackground = () => {
       el.style.width = `${size * 0.6}px`;
       el.style.height = `${size}px`;
       el.style.borderRadius = "50%";
- jules-hero-redesign-artemis-15880237673313619969
       el.style.background = "rgba(10, 26, 68, 0.06)"; // Artemis Blue
-
-      el.style.background = "rgba(234, 234, 234, 0.06)";
- main
     } else {
       // Dot
       el.style.width = `${size * 0.4}px`;
       el.style.height = `${size * 0.4}px`;
       el.style.borderRadius = "50%";
- jules-hero-redesign-artemis-15880237673313619969
       el.style.background = "rgba(240, 90, 40, 0.1)"; // Artemis Orange
-
-      el.style.background = "rgba(234, 234, 234, 0.1)";
- main
     }
 
     return el;
@@ -166,11 +152,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[600px] h-[600px] rounded-full opacity-100"
           style={{
- jules-hero-redesign-artemis-15880237673313619969
             background: "radial-gradient(circle, rgba(240, 90, 40, 0.06) 0%, transparent 70%)", // Orange
-
-            background: "radial-gradient(circle, rgba(234, 88, 12, 0.03) 0%, transparent 70%)",
- main
             filter: "blur(100px)",
             animation: "float 30s ease-in-out infinite",
             left: "10%",
@@ -180,11 +162,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[500px] h-[500px] rounded-full"
           style={{
- jules-hero-redesign-artemis-15880237673313619969
             background: "radial-gradient(circle, rgba(124, 165, 184, 0.06) 0%, transparent 70%)", // Blue/Teal
-
-            background: "radial-gradient(circle, rgba(59, 142, 165, 0.02) 0%, transparent 70%)",
- main
             filter: "blur(100px)",
             animation: "float-alt 40s ease-in-out infinite",
             right: "10%",
@@ -194,11 +172,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[400px] h-[400px] rounded-full"
           style={{
- jules-hero-redesign-artemis-15880237673313619969
             background: "radial-gradient(circle, rgba(10, 26, 68, 0.03) 0%, transparent 70%)", // Dark Blue
-
-            background: "radial-gradient(circle, rgba(234, 234, 234, 0.02) 0%, transparent 70%)",
- main
             filter: "blur(80px)",
             animation: "float 50s ease-in-out infinite reverse",
             left: "50%",
@@ -208,7 +182,7 @@ const LivingBackground = () => {
       </div>
 
       {/* Layer 2: Film grain */}
-      <div className="film-grain" aria-hidden="true" style={{ opacity: 0.01 }} />
+      <div className="film-grain" aria-hidden="true" />
 
       {/* Layer 3: Falling leaves container */}
       <div ref={containerRef} className="fixed inset-0 z-[2] pointer-events-none overflow-hidden" aria-hidden="true" />

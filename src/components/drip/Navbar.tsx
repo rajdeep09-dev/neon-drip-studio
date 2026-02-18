@@ -46,13 +46,8 @@ const BouncyLogo = () => {
                     scale: [1, 0.8, 1],
                   }
                 : hovered
- jules-hero-redesign-artemis-15880237673313619969
                 ? { y: [0, -4, 0], color: ["#F05A28", "#0A1A44", "#F05A28"] }
                 : { y: 0, color: "#F05A28", x: 0, rotate: 0, scale: 1 }
-
-                ? { y: [0, -6, 0], color: ["#EA580C", "#3B8EA5", "#EA580C"] }
-                : { y: 0, color: "#EA580C", x: 0, rotate: 0, scale: 1 }
- main
             }
             transition={
               scattering
@@ -157,34 +152,41 @@ const Navbar = () => {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-artemis-border/20" : "bg-transparent border-transparent"
         }`}
-        style={{ height: scrolled ? 60 : 80 }}
+        style={{ height: scrolled ? 60 : 100 }}
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
-          <BouncyLogo />
+        <div className="max-w-[1400px] mx-auto h-full px-8 md:px-12 flex items-start pt-6 md:pt-8 justify-between">
 
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8" role="menubar">
-            {NAV_ITEMS.map((item) => (
-              <NavLink key={item.label} item={item} />
-            ))}
+          {/* Left Navigation Group */}
+          <div className="hidden md:flex items-center gap-8">
+             {NAV_ITEMS.slice(0, 2).map((item) => (
+                <NavLink key={item.label} item={item} />
+             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <div className="hidden md:block">
-            <Link
+          {/* Center Logo - Only visible on scroll or mobile, otherwise hidden to avoid duplication with Hero */}
+          <div className={`${scrolled ? 'opacity-100' : 'opacity-0'} transition-opacity duration-300`}>
+             <BouncyLogo />
+          </div>
+
+          {/* Right Navigation Group */}
+          <div className="hidden md:flex items-center gap-8">
+             {NAV_ITEMS.slice(2).map((item) => (
+                <NavLink key={item.label} item={item} />
+             ))}
+             <Link
               to="/#reservation"
-              className="px-6 py-2 rounded-full bg-artemis-orange text-white text-sm font-heading font-medium lowercase hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg"
+              className="px-6 py-2 rounded-full bg-artemis-orange text-white text-sm font-heading font-medium lowercase hover:bg-orange-600 transition-all duration-300 shadow-md hover:shadow-lg ml-4"
             >
               reserve
             </Link>
           </div>
 
-          {/* Mobile hamburger */}
+          {/* Mobile hamburger - Absolute positioned on mobile */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5 z-50"
+            className="md:hidden absolute top-6 right-6 w-8 h-8 flex flex-col items-center justify-center gap-1.5 z-50"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
           >

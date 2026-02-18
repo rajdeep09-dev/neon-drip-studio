@@ -23,7 +23,7 @@ const ScrollProgressBar = () => {
         ref={barRef}
         className="h-full"
         style={{
-          background: "linear-gradient(90deg, #EA580C, #3B8EA5)",
+          background: "linear-gradient(90deg, #FF6B35, #E8D5B7)",
           width: "0%",
           willChange: "width",
           transition: "width 0.05s linear",

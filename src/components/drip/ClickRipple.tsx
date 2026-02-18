@@ -34,7 +34,7 @@ const ClickRipple = () => {
         width: 100,
         height: 100,
         borderRadius: "50%",
-        background: "radial-gradient(circle, #EA580C 0%, transparent 70%)",
+        background: "radial-gradient(circle, #FF6B35 0%, transparent 70%)",
         opacity: 0,
         willChange: "transform, opacity",
       }}
