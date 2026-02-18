@@ -1,4 +1,5 @@
 import LivingBackground from "@/components/drip/LivingBackground";
+import Navbar from "@/components/drip/Navbar";
 import HeroSection from "@/components/drip/HeroSection";
 import MarqueeTicker from "@/components/drip/MarqueeTicker";
 import AboutSection from "@/components/drip/AboutSection";
@@ -20,6 +21,7 @@ const Index = () => {
         description="specialty coffee for people who'd rather be anywhere but a starbucks. single origin beans, small batch roasted, in the arts district."
       />
       <LivingBackground />
+      <Navbar />
       <HeroSection />
       <MarqueeTicker />
       <AboutSection />

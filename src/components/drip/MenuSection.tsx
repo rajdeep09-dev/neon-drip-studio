@@ -31,44 +31,62 @@ const menuItems: MenuItem[] = [
 ];
 
 const MenuCard = ({ item, index }: { item: MenuItem; index: number }) => {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouse = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 8;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -8;
+    setTilt({ x, y });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
-      className="bg-white rounded-[30px] shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow group h-full flex flex-col"
+      onMouseMove={handleMouse}
+      onMouseLeave={() => setTilt({ x: 0, y: 0 })}
+      className="glass-light glass-hover group cursor-pointer overflow-hidden"
+      style={{
+        transform: `perspective(600px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
+        transition: "transform 0.3s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.4s ease",
+      }}
     >
       {/* Image area */}
-      <div className="relative overflow-hidden aspect-square bg-gray-50">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-blue-50/50" />
-        <div className="w-full h-full flex items-center justify-center font-serif italic text-6xl text-artemis-orange/20">
-          {item.name.charAt(0)}
+      <div className="relative overflow-hidden rounded-t-[20px] aspect-square bg-muted">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/5 group-hover:from-primary/20 transition-all duration-500" />
+        <div className="w-full h-full flex items-center justify-center">
+          <span className="text-4xl opacity-30 group-hover:scale-110 transition-transform duration-500">☕</span>
         </div>
-        {/* Price badge */}
-        <div className="absolute top-4 right-4 bg-white/80 backdrop-blur px-3 py-1 rounded-full text-sm font-serif italic text-artemis-blue border border-gray-200 shadow-sm">
+        {/* Price badge slides in on hover */}
+        <div className="absolute top-3 right-3 glass-pill font-mono text-sm text-primary font-bold opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
           {item.price}
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-6 flex-1 flex flex-col justify-between">
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <h3 className="font-serif italic font-bold text-xl text-artemis-blue">
-              {item.name}
-            </h3>
-          </div>
-          <p className="text-gray-500 text-sm leading-relaxed font-heading">
-            {item.description}
-          </p>
+      <div className="p-5 space-y-2">
+        <div className="flex items-center justify-between">
+          <h3 className="font-heading font-bold text-base lowercase group-hover:text-primary transition-colors duration-300">
+            {item.name}
+            <span className="inline-block ml-1 opacity-0 group-hover:opacity-100 translate-x-0 group-hover:translate-x-1 transition-all duration-300">
+              →
+            </span>
+          </h3>
+          <span className="font-mono text-sm text-primary font-bold group-hover:glow-orange transition-all duration-300 rounded px-1">
+            {item.price}
+          </span>
         </div>
-
-        <div className="flex flex-wrap gap-2 pt-4 mt-auto">
+        <p className="text-foreground/50 text-sm leading-relaxed lowercase">
+          {item.description}
+        </p>
+        <div className="flex flex-wrap gap-1.5 pt-1">
           {item.tags.map((tag) => (
             <span
               key={tag}
-              className="px-2 py-1 bg-gray-100 rounded-md text-[10px] uppercase tracking-wider text-gray-500 font-heading border border-gray-200"
+              className="glass-pill !py-1 !px-2.5 text-[10px] font-mono uppercase tracking-wider text-foreground/50"
             >
               {tag}
             </span>
@@ -90,19 +108,19 @@ const MenuSection = () => {
       : menuItems.filter((i) => i.category === active);
 
   return (
-    <section ref={ref} className="relative z-10 py-24 md:py-32 px-6 max-w-7xl mx-auto bg-artemis-bg">
+    <section ref={ref} className="relative z-10 py-24 md:py-32 px-6 max-w-7xl mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7 }}
-        className="text-center mb-16 space-y-4"
+        className="text-center mb-12 space-y-4"
       >
-        <span className="inline-block px-4 py-1 rounded-full border border-artemis-orange/30 text-artemis-orange font-serif italic text-lg bg-orange-50/50">
+        <span className="glass-pill font-handwritten text-accent text-lg inline-block">
           the goods
         </span>
-        <h2 className="font-serif italic text-artemis-blue text-5xl md:text-7xl leading-tight">
-          stuff you'll <span className="text-artemis-orange underline decoration-wavy decoration-2">actually want</span> to order.
+        <h2 className="font-heading font-bold text-3xl md:text-5xl lg:text-6xl lowercase leading-tight">
+          stuff you'll <span className="text-gradient-hero">actually want</span> to order.
         </h2>
       </motion.div>
 
@@ -111,16 +129,16 @@ const MenuSection = () => {
         initial={{ opacity: 0, y: -30, scale: 0.95 }}
         animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
         transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
-        className="flex gap-3 overflow-x-auto pb-6 mb-12 scrollbar-hide justify-start md:justify-center"
+        className="flex gap-2 overflow-x-auto pb-4 mb-10 scrollbar-hide justify-start md:justify-center"
       >
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActive(cat)}
-            className={`shrink-0 rounded-full px-6 py-2 text-base font-serif italic transition-all duration-300 ${
+            className={`shrink-0 rounded-full px-5 py-2 text-sm font-heading font-medium lowercase tracking-wide transition-all duration-300 ${
               active === cat
-                ? "bg-artemis-blue text-white shadow-lg"
-                : "bg-white text-gray-500 border border-gray-200 hover:border-artemis-blue/50 hover:text-artemis-blue"
+                ? "glass-orange text-primary glow-orange"
+                : "glass-pill text-foreground/50 hover:text-foreground/80 hover:bg-foreground/[0.06]"
             }`}
           >
             {cat}
@@ -132,7 +150,7 @@ const MenuSection = () => {
       <AnimatePresence mode="wait">
         <motion.div
           key={active}
-          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           {filtered.map((item, i) => (
             <MenuCard key={item.name} item={item} index={i} />
@@ -145,9 +163,9 @@ const MenuSection = () => {
         initial={{ opacity: 0 }}
         animate={inView ? { opacity: 1 } : {}}
         transition={{ delay: 0.8 }}
-        className="text-center mt-20"
+        className="text-center mt-12"
       >
-        <button className="group inline-flex items-center gap-2 text-artemis-blue hover:text-artemis-orange font-serif italic text-xl transition-colors duration-300 border-b border-transparent hover:border-artemis-orange pb-1">
+        <button className="group inline-flex items-center gap-2 text-foreground/60 hover:text-primary font-heading font-medium lowercase text-lg transition-colors duration-300">
           see the full menu
           <span className="inline-block group-hover:translate-x-1.5 transition-transform duration-300">
             →

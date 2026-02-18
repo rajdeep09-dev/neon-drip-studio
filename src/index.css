@@ -4,46 +4,6 @@
 
 @layer base {
   :root {
- jules-hero-redesign-artemis-15880237673313619969
-    /* Artemis Theme Colors */
-    --background: 33 26% 96%; /* #F8F5F2 */
-    --foreground: 223 74% 15%; /* #0A1A44 */
-
-    --card: 0 0% 100%; /* White cards */
-    --card-foreground: 223 74% 15%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 223 74% 15%;
-
-    --primary: 15 88% 55%; /* #F05A28 */
-    --primary-foreground: 33 26% 96%;
-
-    --secondary: 199 28% 60%; /* #7CA5B8 (Muted Blue) */
-    --secondary-foreground: 223 74% 15%;
-
-    --muted: 33 10% 90%;
-    --muted-foreground: 223 40% 40%;
-
-    --accent: 15 88% 55%;
-    --accent-foreground: 33 26% 96%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 33 26% 96%;
-
-    --border: 199 28% 80%;
-    --input: 199 28% 80%;
-    --ring: 15 88% 55%;
-
-    --radius: 1.5rem; /* Rounded corners */
-
-    --sidebar-background: 33 26% 94%;
-    --sidebar-foreground: 223 74% 15%;
-    --sidebar-primary: 15 88% 55%;
-    --sidebar-primary-foreground: 33 26% 96%;
-    --sidebar-accent: 33 10% 90%;
-    --sidebar-accent-foreground: 223 74% 15%;
-    --sidebar-border: 199 28% 80%;
-    --sidebar-ring: 15 88% 55%;
     --background: 0 0% 4%;
     --foreground: 0 0% 92%;
     --card: 0 0% 7%;
@@ -72,7 +32,6 @@
     --sidebar-accent-foreground: 0 0% 92%;
     --sidebar-border: 0 0% 15%;
     --sidebar-ring: 24 85% 48%;
- main
   }
 }
 
@@ -80,10 +39,7 @@
   * { @apply border-border; }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Space Grotesk', system-ui, sans-serif; /* Body font */
-  }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-serif italic; /* Artemis style headers */
+    font-family: 'Space Grotesk', system-ui, sans-serif;
   }
   html { scroll-behavior: smooth; }
 }
@@ -92,34 +48,9 @@
 .font-heading { font-family: 'Space Grotesk', system-ui, sans-serif; }
 .font-handwritten { font-family: 'Caveat', cursive; }
 .font-mono-label { font-family: 'JetBrains Mono', monospace; }
-.font-serif { font-family: 'Playfair Display', serif; }
 
-/* ── Custom Utilities for Artemis Theme ── */
-.card-artemis {
-  @apply bg-white rounded-[40px] shadow-lg border border-[#7CA5B8]/20;
-}
-
-/* ── Legacy Glassmorphism (Updated for Light Theme) ── */
+/* ── Glassmorphism variants ── */
 .glass {
- jules-hero-redesign-artemis-15880237673313619969
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(124, 165, 184, 0.2);
-}
-.glass-light {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid rgba(124, 165, 184, 0.1);
-  border-radius: 20px;
-}
-.glass-dark {
-  background: rgba(10, 26, 68, 0.8); /* Dark Blue */
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -137,24 +68,9 @@
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(234, 234, 234, 0.05);
- main
   border-radius: 20px;
-  color: white;
 }
 .glass-orange {
- jules-hero-redesign-artemis-15880237673313619969
-  background: rgba(240, 90, 40, 0.1);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(240, 90, 40, 0.2);
-  border-radius: 20px;
-}
-
-/* ── Animations ── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-
   background: rgba(234, 88, 12, 0.04);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
@@ -268,20 +184,7 @@
 }
 .glass-input::placeholder {
   color: rgba(234, 234, 234, 0.3);
- main
 }
-.animate-float { animation: float 4s ease-in-out infinite; }
-
- jules-hero-redesign-artemis-15880237673313619969
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #F8F5F2; }
-::-webkit-scrollbar-thumb {
-  background: #7CA5B8;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #F05A28;
 
 /* ── Background layers ── */
 .dot-grid {
@@ -329,15 +232,10 @@
   width: 8px;
   background: linear-gradient(180deg, #EA580C, #EAEAEA);
   filter: brightness(1.2);
- main
 }
 
-/* ── Selection ── */
+/* ── Text selection ── */
 ::selection {
- jules-hero-redesign-artemis-15880237673313619969
-  background: rgba(240, 90, 40, 0.2);
-  color: #0A1A44;
-
   background: rgba(234, 88, 12, 0.3);
   color: #EAEAEA;
 }
@@ -363,5 +261,4 @@
   }
   .film-grain { display: none; }
   .custom-cursor { display: none !important; }
- main
 }
