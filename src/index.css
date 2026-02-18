@@ -5,33 +5,33 @@
 @layer base {
   :root {
     --background: 0 0% 4%;
-    --foreground: 30 38% 81%;
+    --foreground: 0 0% 92%;
     --card: 0 0% 7%;
-    --card-foreground: 30 38% 81%;
+    --card-foreground: 0 0% 92%;
     --popover: 0 0% 7%;
-    --popover-foreground: 30 38% 81%;
-    --primary: 18 100% 57%;
+    --popover-foreground: 0 0% 92%;
+    --primary: 24 85% 48%;
     --primary-foreground: 0 0% 4%;
-    --secondary: 30 38% 81%;
-    --secondary-foreground: 0 0% 4%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 92%;
     --muted: 0 0% 10%;
-    --muted-foreground: 30 38% 60%;
-    --accent: 174 55% 55%;
-    --accent-foreground: 0 0% 4%;
+    --muted-foreground: 0 0% 60%;
+    --accent: 193 47% 44%;
+    --accent-foreground: 0 0% 92%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 30 38% 81%;
+    --destructive-foreground: 0 0% 92%;
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 18 100% 57%;
+    --ring: 24 85% 48%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 4%;
-    --sidebar-foreground: 30 38% 81%;
-    --sidebar-primary: 18 100% 57%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 24 85% 48%;
     --sidebar-primary-foreground: 0 0% 4%;
     --sidebar-accent: 0 0% 10%;
-    --sidebar-accent-foreground: 30 38% 81%;
+    --sidebar-accent-foreground: 0 0% 92%;
     --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 18 100% 57%;
+    --sidebar-ring: 24 85% 48%;
   }
 }
 
@@ -51,59 +51,59 @@
 
 /* ── Glassmorphism variants ── */
 .glass {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(232, 213, 183, 0.08);
+  border: 1px solid rgba(234, 234, 234, 0.06);
 }
 .glass-light {
-  background: rgba(232, 213, 183, 0.06);
+  background: rgba(234, 234, 234, 0.04);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid rgba(232, 213, 183, 0.1);
+  border: 1px solid rgba(234, 234, 234, 0.08);
   border-radius: 20px;
 }
 .glass-dark {
-  background: rgba(10, 10, 10, 0.6);
+  background: rgba(10, 10, 10, 0.7);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(232, 213, 183, 0.06);
+  border: 1px solid rgba(234, 234, 234, 0.05);
   border-radius: 20px;
 }
 .glass-orange {
-  background: rgba(255, 107, 53, 0.06);
+  background: rgba(234, 88, 12, 0.04);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255, 107, 53, 0.12);
+  border: 1px solid rgba(234, 88, 12, 0.1);
   border-radius: 20px;
 }
 .glass-teal {
-  background: rgba(78, 205, 196, 0.04);
+  background: rgba(59, 142, 165, 0.04);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(78, 205, 196, 0.1);
+  border: 1px solid rgba(59, 142, 165, 0.1);
   border-radius: 20px;
 }
 .glass-heavy {
-  background: rgba(10, 10, 10, 0.8);
+  background: rgba(10, 10, 10, 0.9);
   backdrop-filter: blur(40px) saturate(200%);
   -webkit-backdrop-filter: blur(40px) saturate(200%);
-  border: 1px solid rgba(232, 213, 183, 0.08);
+  border: 1px solid rgba(234, 234, 234, 0.06);
   border-radius: 24px;
 }
 .glass-pill {
-  background: rgba(232, 213, 183, 0.08);
+  background: rgba(234, 234, 234, 0.06);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(232, 213, 183, 0.1);
+  border: 1px solid rgba(234, 234, 234, 0.08);
   border-radius: 50px;
   padding: 8px 20px;
 }
 .glass-hover { transition: all 0.3s ease; }
 .glass-hover:hover {
-  background: rgba(232, 213, 183, 0.1);
-  border-color: rgba(232, 213, 183, 0.15);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: rgba(234, 234, 234, 0.08);
+  border-color: rgba(234, 234, 234, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 .glass-animated-border { position: relative; }
 .glass-animated-border::before {
@@ -111,7 +111,7 @@
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: conic-gradient(from 0deg, rgba(255,107,53,0.4), rgba(78,205,196,0.3), rgba(232,213,183,0.3), rgba(255,107,53,0.4));
+  background: conic-gradient(from 0deg, rgba(234,88,12,0.4), rgba(59,142,165,0.3), rgba(234,234,234,0.3), rgba(234,88,12,0.4));
   z-index: -1;
   animation: rotate-border 6s linear infinite;
 }
@@ -121,8 +121,8 @@
 }
 
 /* ── Glows ── */
-.glow-orange { box-shadow: 0 0 20px rgba(255, 107, 53, 0.3), 0 0 40px rgba(255, 107, 53, 0.15), 0 0 80px rgba(255, 107, 53, 0.08); }
-.glow-teal { box-shadow: 0 0 20px rgba(78, 205, 196, 0.3), 0 0 40px rgba(78, 205, 196, 0.15); }
+.glow-orange { box-shadow: 0 0 20px rgba(234, 88, 12, 0.3), 0 0 40px rgba(234, 88, 12, 0.15), 0 0 80px rgba(234, 88, 12, 0.08); }
+.glow-teal { box-shadow: 0 0 20px rgba(59, 142, 165, 0.3), 0 0 40px rgba(59, 142, 165, 0.15); }
 
 /* ── Text effects ── */
 .text-gradient-hero {
@@ -132,7 +132,7 @@
   background-clip: text;
 }
 .text-gradient-animated {
-  background: linear-gradient(135deg, #FF6B35, #E8D5B7, #4ECDC4, #FF6B35);
+  background: linear-gradient(135deg, #EA580C, #EAEAEA, #3B8EA5, #EA580C);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -145,21 +145,21 @@
   100% { background-position: 0% 50%; }
 }
 .text-neon-orange {
-  color: #FF6B35;
-  text-shadow: 0 0 10px rgba(255, 107, 53, 0.5), 0 0 20px rgba(255, 107, 53, 0.3), 0 0 40px rgba(255, 107, 53, 0.15);
+  color: #EA580C;
+  text-shadow: 0 0 10px rgba(234, 88, 12, 0.5), 0 0 20px rgba(234, 88, 12, 0.3), 0 0 40px rgba(234, 88, 12, 0.15);
   animation: neon-pulse 3s ease-in-out infinite;
 }
 @keyframes neon-pulse {
-  0%, 100% { text-shadow: 0 0 10px rgba(255,107,53,0.3), 0 0 20px rgba(255,107,53,0.15); }
-  50% { text-shadow: 0 0 10px rgba(255,107,53,0.6), 0 0 20px rgba(255,107,53,0.4), 0 0 40px rgba(255,107,53,0.2); }
+  0%, 100% { text-shadow: 0 0 10px rgba(234,88,12,0.3), 0 0 20px rgba(234,88,12,0.15); }
+  50% { text-shadow: 0 0 10px rgba(234,88,12,0.6), 0 0 20px rgba(234,88,12,0.4), 0 0 40px rgba(234,88,12,0.2); }
 }
 .text-outline {
-  -webkit-text-stroke: 1.5px #E8D5B7;
+  -webkit-text-stroke: 1.5px #EAEAEA;
   -webkit-text-fill-color: transparent;
   transition: -webkit-text-fill-color 0.4s ease;
 }
 .text-outline:hover {
-  -webkit-text-fill-color: #FF6B35;
+  -webkit-text-fill-color: #EA580C;
 }
 .text-vertical {
   writing-mode: vertical-rl;
@@ -168,27 +168,27 @@
 
 /* Glass input */
 .glass-input {
-  background: rgba(232, 213, 183, 0.04);
+  background: rgba(234, 234, 234, 0.04);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(232, 213, 183, 0.08);
+  border: 1px solid rgba(234, 234, 234, 0.08);
   border-radius: 14px;
-  color: #E8D5B7;
+  color: #EAEAEA;
   transition: all 0.3s ease;
 }
 .glass-input:focus {
   outline: none;
-  border-color: rgba(255, 107, 53, 0.4);
-  box-shadow: 0 0 20px rgba(255, 107, 53, 0.08);
-  background: rgba(232, 213, 183, 0.06);
+  border-color: rgba(234, 88, 12, 0.4);
+  box-shadow: 0 0 20px rgba(234, 88, 12, 0.08);
+  background: rgba(234, 234, 234, 0.06);
 }
 .glass-input::placeholder {
-  color: rgba(232, 213, 183, 0.3);
+  color: rgba(234, 234, 234, 0.3);
 }
 
 /* ── Background layers ── */
 .dot-grid {
-  background-image: radial-gradient(rgba(232, 213, 183, 0.04) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(234, 234, 234, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 .film-grain {
@@ -225,31 +225,31 @@
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: #0A0A0A; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #FF6B35, #E8D5B7);
+  background: linear-gradient(180deg, #EA580C, #EAEAEA);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   width: 8px;
-  background: linear-gradient(180deg, #FF6B35, #E8D5B7);
+  background: linear-gradient(180deg, #EA580C, #EAEAEA);
   filter: brightness(1.2);
 }
 
 /* ── Text selection ── */
 ::selection {
-  background: rgba(255, 107, 53, 0.3);
-  color: #E8D5B7;
+  background: rgba(234, 88, 12, 0.3);
+  color: #EAEAEA;
 }
 
 /* ── Placeholder ── */
 ::placeholder {
-  color: rgba(232, 213, 183, 0.3);
+  color: rgba(234, 234, 234, 0.3);
   font-style: italic;
 }
 
 /* ── Focus visible ── */
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.5);
+  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.5);
 }
 
 /* ── Reduced motion ── */

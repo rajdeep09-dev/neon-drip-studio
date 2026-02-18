@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from "react";
 
-const LEAF_COUNT_DESKTOP = 20;
-const LEAF_COUNT_MOBILE = 10;
+const LEAF_COUNT_DESKTOP = 8;
+const LEAF_COUNT_MOBILE = 4;
 
 interface Leaf {
   el: HTMLDivElement;
@@ -37,9 +37,9 @@ const LivingBackground = () => {
       el.style.height = `${size * 1.4}px`;
       el.style.borderRadius = "50% 0 50% 0";
       const colors = [
-        "rgba(232, 213, 183, 0.08)",
-        "rgba(255, 107, 53, 0.06)",
-        "rgba(78, 205, 196, 0.05)",
+        "rgba(234, 234, 234, 0.08)",
+        "rgba(234, 88, 12, 0.06)",
+        "rgba(59, 142, 165, 0.05)",
       ];
       el.style.background = colors[Math.floor(Math.random() * colors.length)];
     } else if (type === 1) {
@@ -47,13 +47,13 @@ const LivingBackground = () => {
       el.style.width = `${size * 0.6}px`;
       el.style.height = `${size}px`;
       el.style.borderRadius = "50%";
-      el.style.background = "rgba(232, 213, 183, 0.06)";
+      el.style.background = "rgba(234, 234, 234, 0.06)";
     } else {
       // Dot
       el.style.width = `${size * 0.4}px`;
       el.style.height = `${size * 0.4}px`;
       el.style.borderRadius = "50%";
-      el.style.background = "rgba(232, 213, 183, 0.1)";
+      el.style.background = "rgba(234, 234, 234, 0.1)";
     }
 
     return el;
@@ -152,7 +152,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[600px] h-[600px] rounded-full opacity-100"
           style={{
-            background: "radial-gradient(circle, rgba(255,107,53,0.06) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(234, 88, 12, 0.03) 0%, transparent 70%)",
             filter: "blur(100px)",
             animation: "float 30s ease-in-out infinite",
             left: "10%",
@@ -162,7 +162,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[500px] h-[500px] rounded-full"
           style={{
-            background: "radial-gradient(circle, rgba(78,205,196,0.04) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(59, 142, 165, 0.02) 0%, transparent 70%)",
             filter: "blur(100px)",
             animation: "float-alt 40s ease-in-out infinite",
             right: "10%",
@@ -172,7 +172,7 @@ const LivingBackground = () => {
         <div
           className="absolute w-[400px] h-[400px] rounded-full"
           style={{
-            background: "radial-gradient(circle, rgba(232,213,183,0.05) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(234, 234, 234, 0.02) 0%, transparent 70%)",
             filter: "blur(80px)",
             animation: "float 50s ease-in-out infinite reverse",
             left: "50%",
@@ -182,7 +182,7 @@ const LivingBackground = () => {
       </div>
 
       {/* Layer 2: Film grain */}
-      <div className="film-grain" aria-hidden="true" />
+      <div className="film-grain" aria-hidden="true" style={{ opacity: 0.01 }} />
 
       {/* Layer 3: Falling leaves container */}
       <div ref={containerRef} className="fixed inset-0 z-[2] pointer-events-none overflow-hidden" aria-hidden="true" />

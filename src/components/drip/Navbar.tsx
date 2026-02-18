@@ -46,8 +46,8 @@ const BouncyLogo = () => {
                     scale: [1, 0.8, 1],
                   }
                 : hovered
-                ? { y: [0, -6, 0], color: ["#FF6B35", "#4ECDC4", "#FF6B35"] }
-                : { y: 0, color: "#FF6B35", x: 0, rotate: 0, scale: 1 }
+                ? { y: [0, -6, 0], color: ["#EA580C", "#3B8EA5", "#EA580C"] }
+                : { y: 0, color: "#EA580C", x: 0, rotate: 0, scale: 1 }
             }
             transition={
               scattering
